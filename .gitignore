@@ -1,3 +1,13 @@
+#NETBEANS
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+
+
 #ECLIPSE
 .metadata
 bin/
