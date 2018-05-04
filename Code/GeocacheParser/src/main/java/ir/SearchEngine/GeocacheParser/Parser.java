@@ -1,13 +1,7 @@
 package ir.SearchEngine.GeocacheParser;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 
@@ -56,10 +50,71 @@ public class Parser {
 				String name = lines[i].replace("Name: ",  ""); //delete the key
 				geocache.setName(name); //and set the name of the cache
 			}
+			if(lines[i].contains("Koordinaten: ")) {
+				String koordinaten = lines[i].replace("Koordinaten: ",  "");
+				geocache.setCoordinates(koordinaten);
+			}
+			if(lines[i].contains("Status: ")) {
+				String status = lines[i].replace("Status: ",  "");
+				geocache.setStatus(status);
+			}
+			if(lines[i].contains("Zustand: ")) {
+				String condition = lines[i].replace("Zustand: ",  "");
+				geocache.setCondition(condition);
+			}
+			if(lines[i].contains("Versteckt am: ")) {
+				String hiddenAt = lines[i].replace("Versteckt am: ",  "");
+				geocache.setHiddenAt(hiddenAt);
+			}
+			if(lines[i].contains("Wegpunkt: ")) {
+				String waypoint = lines[i].replace("Wegpunkt: ",  "");
+				geocache.setWaypoint(waypoint);
+			}
+			if(lines[i].contains("Cacheart: ")) {
+				String cacheType = lines[i].replace("Cacheart: ",  "");
+				geocache.setCacheType(cacheType);
+			}
+			if(lines[i].contains("Behälter: ")) {
+				String caseType = lines[i].replace("Behälter: ",  "");
+				geocache.setCaseType(caseType);
+			}
+			if(lines[i].contains("D/T: ")) {
+				String caseType = lines[i];
+				caseType = caseType.replace("D/T:",  "");
+				String[] strings = caseType.split("/");
+				geocache.setDifficulty(Float.parseFloat(strings[0]));
+				geocache.setTerrain(Float.parseFloat(strings[1]));
+			}
+			if(lines[i].contains("Online: ")) {
+				String link = lines[i].replace("Online: ",  "");
+				geocache.setLink(link);
+			}
+			if(lines[i].contains("Kurzbeschreibung: ")) {
+				String descriptionSnippet = lines[i].replace("Kurzbeschreibung: ",  "");
+				geocache.setDescriptionSnippet(descriptionSnippet);
+			}
+			if(lines[i].contains("Beschreibung:") || lines[i].contains("Beschreibung (aus HTML konvertiert):")) {
+				StringBuilder stringBuilder = new StringBuilder();
+				int x = i+2; //skip the line with the first <===================>
+				while(!lines[x].contains("<===================>")) { //add all lines until the next separator is reached
+					stringBuilder.append(lines[x]  + "\n");
+					x++;
+				}
+				geocache.setDescription(stringBuilder.toString());
+				System.out.println(stringBuilder);
+			}
+			if(lines[i].contains("Zusätzliche Hinweise:")) {
+				StringBuilder stringBuilder = new StringBuilder();
+				int x = i+2; //skip the line with the first <===================>
+				while(!lines[x].contains("<===================>")) { //add all lines until the next separator is reached
+					stringBuilder.append(lines[x] + "\n");
+					x++;
+				}
+				geocache.setTips(stringBuilder.toString());
+			}
 		}
 		//TODO continue parsing
 		
 		return geocache;
 	}
-	
 }

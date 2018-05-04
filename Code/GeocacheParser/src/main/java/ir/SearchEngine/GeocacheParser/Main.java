@@ -22,10 +22,9 @@ public class Main {
 		 String data = FileIO.readFile(filesInTestDirectory.get(0));
 		 System.out.println(data);
 		 
-		 
 		 Geocache testCache = Parser.parse(filesInTestDirectory.get(0));
 		 System.out.println(testCache.toString());
-		 
+
 		 JSONObject json = testCache.toJSON();
 		 System.out.println(json.toString());
 

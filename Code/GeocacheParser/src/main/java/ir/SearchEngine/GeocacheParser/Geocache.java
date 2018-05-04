@@ -1,6 +1,5 @@
 package ir.SearchEngine.GeocacheParser;
 
-import java.util.Date;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -15,7 +14,7 @@ public class Geocache {
 	private String coordinates;
 	private String status;
 	private String condition;
-	private Date hiddenAt;
+	private String hiddenAt;
 	private String waypoint;
 	private String cacheType;
 	private String caseType;
@@ -24,7 +23,7 @@ public class Geocache {
 	private String link;
 	private String descriptionSnippet;
 	private String description;
-	private String tipps; //TODO maybe transform this into separate class to parse chiffre efficiently
+	private String tips; //TODO maybe transform this into separate class to parse chiffre efficiently
 	private List<String> logs;
 	
 		
@@ -66,11 +65,11 @@ public class Geocache {
 		this.condition = condition;
 	}
 
-	public Date getHiddenAt() {
+	public String getHiddenAt() {
 		return hiddenAt;
 	}
 
-	public void setHiddenAt(Date hiddenAt) {
+	public void setHiddenAt(String hiddenAt) {
 		this.hiddenAt = hiddenAt;
 	}
 
@@ -138,12 +137,12 @@ public class Geocache {
 		this.description = description;
 	}
 
-	public String getTipps() {
-		return tipps;
+	public String getTips() {
+		return tips;
 	}
 
-	public void setTipps(String tipps) {
-		this.tipps = tipps;
+	public void setTips(String tips) {
+		this.tips = tips;
 	}
 
 	public List<String> getLogs() {
@@ -169,10 +168,22 @@ public class Geocache {
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
 		json.put("name",  this.getName());
+		json.put("coordinates", this.getCoordinates());
+		json.put("status",  this.getStatus());
+		json.put("condition",  this.getCondition());
+		json.put("hiddenAt",  this.getHiddenAt());
+		json.put("waypoint",  this.getWaypoint());
+		json.put("cacheType",  this.getCacheType());
+		json.put("caseType",  this.getCaseType());
+		json.put("difficulty",  this.getDifficulty());
+		json.put("terrain",  this.getTerrain());
+		json.put("link",  this.getLink());
+		json.put("descriptionSnippet",  this.getDescriptionSnippet());
+		json.put("description",  this.getDescription());
+		json.put("tips",  this.getTips());
+		json.put("logs", this.getLogs());
 		//TODO continue transformation of cache into jsonObject
 		
 		return json;
 	}
-
-
 }
