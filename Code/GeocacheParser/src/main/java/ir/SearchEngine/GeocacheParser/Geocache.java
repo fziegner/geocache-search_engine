@@ -4,7 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.json.JSONObject;
-
+/**
+ * Model Class for Geocache
+ * @author Christian Schlecht
+ *
+ */
 public class Geocache {
 	
 	private String name;
@@ -28,6 +32,7 @@ public class Geocache {
 		this.name = name;
 		this.coordinates = coordinates;
 	}
+	public Geocache() {}
 	
 	public String getName() {
 		return name;
@@ -150,12 +155,21 @@ public class Geocache {
 	}
 	
 	/**
+	 * toString for debugging purposes
+	 */
+	@Override
+	public String toString() {
+		return this.getName();
+	}
+	
+	/**
 	 * transforms the Geocache Object into a JSONObject
 	 * @return JSONObject of the Geocache
 	 */
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
-		//TODO transform cache into jsonObject
+		json.put("name",  this.getName());
+		//TODO continue transformation of cache into jsonObject
 		
 		return json;
 	}

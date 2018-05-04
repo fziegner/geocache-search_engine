@@ -11,10 +11,15 @@ import java.util.stream.Collectors;
 
 import org.json.JSONObject;
 
+/**
+ * parser Class to transform the geocache's .txt file into a json file
+ * @author Christian Schlecht
+ *
+ */
 public class Parser {
 	private List<String> fileNames; //holds the filepaths that are read from
 	private List<Geocache> caches;  //parsed caches land in here
-	private List<JSONObject> cachesJSON; //
+	private List<JSONObject> cachesJSON; //hold the jsons of the parsed caches
 	
 	/**
 	 * Constructor of the Parser.
@@ -26,7 +31,7 @@ public class Parser {
 	 * @param folderPath path to the directory/folder
 	 */
 	public Parser(String folderPath) {
-		fileNames = listAllFiles(folderPath);
+		fileNames = FileIO.listAllFiles(folderPath);
 		caches = new ArrayList<Geocache>();
 		cachesJSON = new ArrayList<JSONObject>();
 		for(String file : fileNames) {
@@ -38,31 +43,23 @@ public class Parser {
 	}
 	
 	/**
-	 * collects all file paths from a given DIRECTORY path
-	 * @param path the directoy to search for files in
-	 * @return List of filePaths
-	 */
-	public static List<String> listAllFiles(String path) {
-		List<String> fileNames = new ArrayList<String>();
-		
-		File directory = new File(path);
-		for(File file : directory.listFiles()) {
-			if(file.isFile()) {
-				fileNames.add(file.getAbsolutePath());
-			}
-		}
-		return fileNames;
-	}
-	
-	/**
 	 * parses a given file (by filepath) to a GeoCache Object
 	 * @param path filepath to be read from
 	 * @return geocache parsed from the file
 	 */
 	public static Geocache parse(String path) {
-		//TODO parse
+		Geocache geocache = new Geocache();
+		String cacheString = FileIO.readFile(path);
+		String[] lines = cacheString.split("\n"); //separate every line
+		for(int i = 0; i < lines.length; i++) {
+			if(lines[i].contains("Name: ")) { //check if the key "Name: " is in a line
+				String name = lines[i].replace("Name: ",  ""); //delete the key
+				geocache.setName(name); //and set the name of the cache
+			}
+		}
+		//TODO continue parsing
 		
-		return null; //for now just return null
+		return geocache;
 	}
 	
 }
