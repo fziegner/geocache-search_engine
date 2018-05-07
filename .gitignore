@@ -85,7 +85,7 @@ local.properties
 *.jar
 *.war
 *.ear
-*.zip
+#removed *.zip from here
 *.tar.gz
 *.rar
 
