@@ -97,7 +97,7 @@ public class Parser {
 				StringBuilder stringBuilder = new StringBuilder();
 				int x = i+2; //skip the line with the first <===================>
 				while(!lines[x].contains("<===================>")) { //add all lines until the next separator is reached
-					stringBuilder.append(lines[x]  + "\n");
+					stringBuilder.append(lines[x]).append("\n");
 					x++;
 				}
 				geocache.setDescription(stringBuilder.toString());

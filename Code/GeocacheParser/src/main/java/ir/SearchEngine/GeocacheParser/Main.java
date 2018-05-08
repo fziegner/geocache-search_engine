@@ -26,7 +26,7 @@ public class Main {
 		 System.out.println(testCache.toString());
 
 		 JSONObject json = testCache.toJSON();
-		 System.out.println(json.toString());
+		 System.out.println(json.toString(4));
 
 	}
 
