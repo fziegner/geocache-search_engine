@@ -19,7 +19,7 @@ public class FileIO {
 	
 	/**
 	 * collects all file paths from a given DIRECTORY path
-	 * @param path the directoy to search for files in
+	 * @param path of the directory to search for files in
 	 * @return List of filePaths
 	 */
 	public static List<String> listAllFiles(String path) {
