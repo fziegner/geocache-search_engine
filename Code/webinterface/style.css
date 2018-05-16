@@ -4,12 +4,11 @@
 
 body {
 	background: #f9edc2;
-	min-height:800px;
 
 	}
 
 header {
-	max-width: 1024px;
+	width:100%;
 	background: #161511;
 	padding:20px;
 	padding-left:20%;
@@ -18,32 +17,39 @@ header {
 	margin:-10px;
 }
 
-.logobackground {
-    overflow: hidden;	
-	color: white;
-}
-
-.inhalt {
-	padding:80px;
+main {
 	padding-left:20%;
 	padding-right:20%;
-
-	
+	text-align: center;	
 }
 
 footer {
 	width:100%;
-	max-width: 1024px;
 	background: #161511;
 	padding:20px;
 	padding-left:20%;
 	padding-right:20%;
 	height: 30px;
 	margin:-10px;
-	position:absolute;
-	bottom:0;
-	
 	color: white;
+}
+
+
+.logoarea {
+	color: white;
+}
+
+.suche {
+	padding-top:30px;
+	padding-bottom:20px;
+}
+#suche {
+	width:600px;
+	height:30px;
+}
+
+#suchknopf {
+	height:35px;
 }
 
 
