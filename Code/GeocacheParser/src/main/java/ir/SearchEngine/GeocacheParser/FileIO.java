@@ -1,10 +1,15 @@
 package ir.SearchEngine.GeocacheParser;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,11 +63,37 @@ public class FileIO {
 	
 	/**
 	 * outputs the JSON to a file, should potentially be a .json file (creates it if is not already present)
-	 * @param path String containing the path of the file that should be written to
+	 * @param path String containing the path of the directory that file should be created in
 	 * @param data the JSON that should be written
 	 */
-	public static void writeFile(String path, JSONObject data) {
+	public static void writeFile(String directoryPath, Geocache cache) {
+		String os = System.getProperty("os.name").toLowerCase(); //read the underlying operating system
+		File file;
+		if(os.indexOf("win") >= 0) {
+			file = new File(directoryPath + "\\" + cache.getWaypoint() + ".json"); // windows has \ as directory separator
+		}
+		else if (os.indexOf("mac") >= 0){
+			file = new File(directoryPath + ":" + cache.getWaypoint() + ".json"); // mac has :
+		}
+		else if(os.indexOf("nux") >= 0) {
+			file = new File(directoryPath + "/" + cache.getWaypoint() + ".json"); // unix has /
+		}
+		else {
+			file = new File(directoryPath + "\\" + cache.getWaypoint() + ".json"); //default is windows
+		}
 		
+		
+		try {
+			Writer w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+			w.write(cache.toJSON().toString());
+			w.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

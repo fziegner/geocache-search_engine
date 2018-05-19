@@ -24,15 +24,15 @@ public class Parser {
 	 * 4. output the JSON of the caches into separate .json files
 	 * @param folderPath path to the directory/folder
 	 */
-	public Parser(String folderPath) {
-		fileNames = FileIO.listAllFiles(folderPath);
+	public Parser(String folderPathIn, String folderPathOut) {
+		fileNames = FileIO.listAllFiles(folderPathIn);
 		caches = new ArrayList<Geocache>();
 		cachesJSON = new ArrayList<JSONObject>();
 		for(String file : fileNames) {
 			caches.add(parse(file));
 		}
 		for(Geocache geocache : caches) {
-			cachesJSON.add(geocache.toJSON());
+			FileIO.writeFile(folderPathOut, geocache);
 		}
 	}
 	
