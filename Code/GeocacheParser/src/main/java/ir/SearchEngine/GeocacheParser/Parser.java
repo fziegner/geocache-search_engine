@@ -110,7 +110,7 @@ public class Parser {
 				StringBuilder stringBuilder = new StringBuilder();
 				int x = i+2; //skip the line with the first <===================>
 				while(!lines[x].contains("<===================>")) { //add all lines until the next separator is reached
-					stringBuilder.append(lines[x]).append("\n");
+					stringBuilder.append(lines[x]);
 					x++;
 				}
 				geocache.setDescription(stringBuilder.toString());
@@ -121,7 +121,7 @@ public class Parser {
 				StringBuilder stringBuilder = new StringBuilder();
 				int x = i+2; //skip the line with the first <===================>
 				while(!lines[x].contains("<===================>")) { //add all lines until the next separator is reached
-					stringBuilder.append(lines[x]).append("\n");
+					stringBuilder.append(lines[x]);
 					x++;
 				}
 				geocache.setTips(stringBuilder.toString());
@@ -133,7 +133,7 @@ public class Parser {
 				int x = i+2; //skip the line with the first <===================>
 				while(x < documentLength) {
 					while(x <= documentLength && !lines[x].contains("<===================>")) { //add all lines until the next separator or EOF is reached
-						stringBuilder.append(lines[x]).append("\n");
+						stringBuilder.append(lines[x]);
 						x++;
 					}
 					geocache.getLogs().add(stringBuilder.toString());
