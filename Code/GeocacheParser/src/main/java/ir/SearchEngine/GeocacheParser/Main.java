@@ -9,8 +9,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		String testDirectory = "C:\\Users\\Christian-PC2\\Desktop\\test";
-		new Parser(testDirectory, testDirectory);
+		String data = "C:\\Users\\Christian-PC2\\Desktop\\data";
+		String dataParsed = "C:\\Users\\Christian-PC2\\Desktop\\dataParsed";
+		new Parser(data, dataParsed);
 	}
 
 }
