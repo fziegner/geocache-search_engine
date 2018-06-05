@@ -9,6 +9,10 @@ nbdist/
 
 
 #ECLIPSE
+
+/target
+target/*
+/target/*
 .metadata
 bin/
 tmp/
