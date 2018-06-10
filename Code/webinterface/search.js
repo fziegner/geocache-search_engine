@@ -1,4 +1,4 @@
-const baseURL = "http://localhost:8080/geocache-search-engine/"
+const baseURL = "http://localhost:8080/geocache-search-engine/webapi/"
 const searchURL = baseURL + "search/"
 
 function executeRESTCall(){
