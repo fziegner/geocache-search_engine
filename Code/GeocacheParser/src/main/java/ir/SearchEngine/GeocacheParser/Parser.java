@@ -1,7 +1,9 @@
 package ir.SearchEngine.GeocacheParser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 import org.json.JSONObject;
 
@@ -137,7 +139,23 @@ public class Parser {
 							stringBuilder.append(lines[x]);
 							x++;
 						}
-						geocache.getLogs().add(stringBuilder.toString());
+						String logString = stringBuilder.toString(); //all lines of a log entry
+					    String[] splitter = logString.split("/"); //split them on /
+					    String person = splitter[0]; //first entry is the person
+					    String date = splitter[1]; //second the date
+					    String foundAndMsg = splitter[2]; //last one is found and msg without separator directly appended, so we need to split again:
+					    boolean found;
+					    if(foundAndMsg.contains("nicht gefunden")) { //cache was not found, so we set the bool and simply "delete" the found status from the string
+					    	found = false;
+					    	foundAndMsg = foundAndMsg.replace("nicht gefunden", "");
+					    }
+					    else { //same thing applies here
+					    	found = true;
+					    	foundAndMsg = foundAndMsg.replace("gefunden", "");
+					    }
+					    Log log = new Log(person, date, foundAndMsg, found); //create a new log
+					    geocache.appendLog(log); //append it to the cache
+						
 						stringBuilder.setLength(0);
 						x++;
 					}		

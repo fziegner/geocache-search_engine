@@ -3,6 +3,7 @@ package ir.SearchEngine.GeocacheParser;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 /**
  * Model Class for Geocache
@@ -25,14 +26,14 @@ public class Geocache {
 	private String descriptionSnippet;
 	private String description;
 	private String tips; //TODO maybe transform this into separate class to parse chiffre efficiently
-	private List<String> logs;
+	private List<Log> logs;
 		
 	public Geocache(String name, String coordinates) {
 		this.name = name;
 		this.coordinates = coordinates;
 	}
 	public Geocache() {
-		this.logs = new ArrayList<String>();
+		this.logs = new ArrayList<Log>();
 	}
 	
 	public String getName() {
@@ -147,12 +148,16 @@ public class Geocache {
 		this.tips = tips;
 	}
 
-	public List<String> getLogs() {
+	public List<Log> getLogs() {
 		return logs;
 	}
 
-	public void setLogs(List<String> logs) {
+	public void setLogs(List<Log> logs) {
 		this.logs = logs;
+	}
+	
+	public void appendLog(Log log) {
+		this.logs.add(log);
 	}
 	
 	/**
@@ -183,7 +188,11 @@ public class Geocache {
 		json.put("descriptionSnippet",  this.getDescriptionSnippet());
 		json.put("description",  this.getDescription());
 		json.put("tips",  this.getTips());
-		json.put("logs", this.getLogs());
+		JSONArray logs = new JSONArray();
+		for(Log log : this.logs) {
+			logs.put(log.toJSON());
+		}
+		json.put("logs", logs);
 		
 		return json;
 	}
