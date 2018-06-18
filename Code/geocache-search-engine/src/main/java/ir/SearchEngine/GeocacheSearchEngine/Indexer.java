@@ -42,7 +42,7 @@ public class Indexer {
 	}
 	
 	/**
-	 * add a document to the index, tips, waypoint and link are ignored
+	 * add a document to the index, tips and link are ignored
 	 * @param file File to a JSON
 	 * @return the parsed Document from the JSON file
 	 * @throws IOException
@@ -53,13 +53,14 @@ public class Indexer {
 		JSONObject json = new JSONObject(readFile(file));
 		
 		for(String key : json.keySet()) {
-			if(key.equals("tips") || key.equals("waypoint") || key.equals("link")) {
-				continue; //we do not want to index irrelevant info, such as tips, waypoint or the link
+			if(key.equals("tips") || key.equals("link")) {
+				continue; //we do not want to index irrelevant info, such as tips or the link
 			}
 			String value = json.get(key).toString(); //TODO: do not transform every key to a string but handle datatypes, e.g. difficulty is int
 			StringField field = new StringField(key, value, Field.Store.YES);
 			document.add(field);
 		}
+		document.add(new StringField("contents", json.toString(), Field.Store.YES));
 		
 		return document;
 	}

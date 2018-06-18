@@ -34,7 +34,7 @@ public class Searcher {
 	
 	public TopDocs search(String searchQuery) throws IOException, ParseException, org.apache.lucene.queryparser.classic.ParseException {
 	  	query = queryParser.parse(searchQuery);
-	  	return indexSearcher.search(query, 10);
+	  	return indexSearcher.search(query, CONSTANTS.MAX_SEARCH_RESULTS);
 	}
 	
 	public Document getDocument(ScoreDoc scoreDoc) throws CorruptIndexException, IOException {
