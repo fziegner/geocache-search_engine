@@ -26,6 +26,7 @@ public class Searcher {
 	
 	public Searcher(String indexDirectoryPath) throws IOException {
 		FSDirectory indexDirectory = FSDirectory.open(Paths.get(indexDirectoryPath));
+		System.out.println("open Searcher on: " + indexDirectory.toString());
 		Analyzer analyzer = new GermanAnalyzer();
 	  	indexReader = DirectoryReader.open(indexDirectory);
 	  	indexSearcher = new IndexSearcher(indexReader);
