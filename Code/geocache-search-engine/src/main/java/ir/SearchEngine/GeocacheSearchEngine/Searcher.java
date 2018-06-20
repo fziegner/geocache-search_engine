@@ -10,6 +10,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -30,7 +31,9 @@ public class Searcher {
 		Analyzer analyzer = new GermanAnalyzer();
 	  	indexReader = DirectoryReader.open(indexDirectory);
 	  	indexSearcher = new IndexSearcher(indexReader);
-	  	queryParser = new QueryParser("contents", analyzer);
+	  	queryParser = new MultiFieldQueryParser(
+	  			new String[] {"waypoint", "name", "logs", "description", "coordinates", "hiddenAt", "descriptionSnippet", "cacheType", "difficulty", "terrain", "caseType", "condition", "status"},
+                analyzer);
 	}
 	
 	public TopDocs search(String searchQuery) throws IOException, ParseException, org.apache.lucene.queryparser.classic.ParseException {
