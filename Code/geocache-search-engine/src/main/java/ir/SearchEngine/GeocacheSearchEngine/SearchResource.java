@@ -40,7 +40,7 @@ public class SearchResource {
 			//execute the search in the index
 			searcher = new Searcher(CONSTANTS.INDEX_DIRECTORY);
 			docs = searcher.search(query);
-			System.out.println("after seach, found: " + docs.toString());
+			System.out.println("after seach, found: " + docs.toString() + ", max score: " + docs.getMaxScore());
 			hits = docs.scoreDocs;
 			System.out.println("number of hits: " + hits.length);
 			for(int i = 0; i < hits.length; i++) {
