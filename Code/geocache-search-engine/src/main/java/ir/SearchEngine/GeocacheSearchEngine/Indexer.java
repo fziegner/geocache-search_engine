@@ -7,7 +7,11 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.StopFilter;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.de.GermanAnalyzer;
+import org.apache.lucene.analysis.shingle.ShingleFilter;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -34,7 +38,7 @@ public class Indexer {
 	public Indexer(String indexDirectoryPath) throws IOException {
 		
 		FSDirectory indexDirectory = FSDirectory.open(Paths.get(indexDirectoryPath));
-        Analyzer analyzer = new GermanAnalyzer();
+		Analyzer analyzer = new GermanAnalyzer();
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
         config.setOpenMode(OpenMode.CREATE);
 		
@@ -51,17 +55,38 @@ public class Indexer {
 		
 		Document document = new Document();
 		JSONObject json = new JSONObject(readFile(file));
+		Analyzer analyzer = new GermanAnalyzer();
 		
 		for(String key : json.keySet()) {
-			if(key.equals("tips") || key.equals("link")) {
+			if(key.equals("tips") || key.equals("link") || key.equals("waypoint")) {
 				continue; //we do not want to index irrelevant info, such as tips or the link
 			}
 			String value = json.get(key).toString(); //TODO: do not transform every key to a string but handle datatypes, e.g. difficulty is int
-			StringField field = new StringField(key, value, Field.Store.YES);
+			TokenStream tokenStream = analyzer.tokenStream(key, value);
+			CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
+			tokenStream = new StopFilter(tokenStream, GermanAnalyzer.getDefaultStopSet());
+			tokenStream = new ShingleFilter(tokenStream, 3);
+			tokenStream.reset();
+			StringBuilder stringBuilder = new StringBuilder();
+			while (tokenStream.incrementToken()) {
+			    String term = charTermAttribute.toString();
+			    stringBuilder.append(term.toString());
+			}
+			TextField field = new TextField(key, stringBuilder.toString(), Field.Store.YES);
+			tokenStream.end();
+			tokenStream.close();
 			document.add(field);
+		}
+		for(String key : json.keySet()) {
+			if(key.equals("waypoint")) {
+				String value = json.get(key).toString();
+				StringField field = new StringField(key, value, Field.Store.YES);
+				document.add(field);	
+			}
 		}
 		document.add(new StringField("contents", json.toString(), Field.Store.YES));
 		
+		analyzer.close();
 		return document;
 	}
 	
