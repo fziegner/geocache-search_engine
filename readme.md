@@ -25,4 +25,7 @@ Deploy this file into your Tomcat-Server and start it. Per default, visit:
 http://localhost:8080/geocache-search-engine/
 ```
 in your preferred browser. If everything is working correctly, you should see the index.jsp
-which currently display a "Hello World!"
+which currently display a Description of the REST API.
+
+IMPORTANT: You need to start your tomcat from the directory where the index folder is located.
+e.g.: if you want to deploy your webapp through the tomcat application manager, you need to copy your index folder to /tomcat/bin/
