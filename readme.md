@@ -2,12 +2,13 @@
 ### Installation
 
 GeocacheSearchEngine needs to following requirements to run:
-* [Java JDK 10](http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html)
-* [Apache Tomcat 9](https://tomcat.apache.org/download-90.cgi) to be deployed on 
+* [Java JDK 10](http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html) for compilation
+* [Maven](https://maven.apache.org/) to run the build 
+* [Apache Tomcat 9](https://tomcat.apache.org/download-90.cgi) to be deployed on
 
 The following dependencies will be downloaded via maven:
-* [Apache Lucene]()
-* [Jersey JAX-RS]()
+* [Apache Lucene](https://lucene.apache.org/)
+* [Jersey JAX-RS](https://jersey.github.io/)
 
 Navigate into the project folder and execute the following command:
 ```sh
