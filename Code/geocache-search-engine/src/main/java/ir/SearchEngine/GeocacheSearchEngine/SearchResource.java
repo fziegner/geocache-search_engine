@@ -11,7 +11,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.ScoreDoc;
@@ -32,7 +34,7 @@ public class SearchResource {
 	@GET
 	@Path("/{query}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String search(@PathParam("query") String query) {
+	public Response search(@PathParam("query") String query) {
 		System.out.println("you searched for: " + query);
 		Searcher searcher;
 		TopDocs docs;
@@ -72,7 +74,7 @@ public class SearchResource {
 		}
 		
 		
-		return caches.toString();
+		return Response.status(200).entity(caches.toString()).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
 		}
 	
 	/**
@@ -93,7 +95,7 @@ public class SearchResource {
 	@GET
 	@Path("/extended/{query}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String extendedSearch(@PathParam("query") String query,
+	public Response extendedSearch(@PathParam("query") String query,
 								 @QueryParam("hiddenAfter") String hiddenAfter, 
 								 @QueryParam("coordinates") String coordinates,
 								 @DefaultValue("1000") @QueryParam("range") int range,
@@ -119,8 +121,9 @@ public class SearchResource {
 			caches.put(new JSONObject(jsonStr));
 		}
 		
-		//return caches.toString();
-		return "{\"status\":\"not yet implemented\"}";
+		//return Response.status(200).entity(caches.toString()).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
+		return Response.status(200).entity("{\"status\":\"not yet implemented\"}").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
+		
 	}
 	
 }
