@@ -42,6 +42,8 @@ footer {
 .suche {
 	padding-top:30px;
 	padding-bottom:20px;
+	margin-left:90px;
+	margin-right:90px;
 }
 #suche {
 	width:600px;
@@ -52,5 +54,15 @@ footer {
 	height:35px;
 }
 
+.suchergebnis {
+	text-align:left;
+	border-left:black 5px ridge;
+	padding: 10px;
+	margin: 10px;
+}
+
+.show {
+	text-align:right;
+}
 
 	
