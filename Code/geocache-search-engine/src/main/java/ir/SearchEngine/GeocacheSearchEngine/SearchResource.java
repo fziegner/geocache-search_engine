@@ -126,4 +126,28 @@ public class SearchResource {
 		
 	}
 	
+	/**
+	 * REST Method for search suggestions
+	 * expected usage: for every kestroke on the frontend execute this call and show the results
+	 * @param query Query to get suggestions for
+	 * @return JSON containing the search suggestions as a JSONArray ( {"suggestions":[.....]} )
+	 */
+	@GET
+	@Path("/suggest/{query}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response searchSuggestion(@PathParam("query") String query) {
+		
+		List<String> suggestions = new ArrayList<String>();
+		
+		//TODO do the search and put the result into the suggestions arraylist
+		
+		
+		
+		JSONObject json = new JSONObject();
+		json.put("suggestions", suggestions);
+		
+		
+		return Response.status(200).entity(json.toString()).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
+	}
+	
 }
