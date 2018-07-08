@@ -10,7 +10,7 @@ public class Main {
 		
 		//run a whole setup 
 		
-		String data = "/home/christian/Schreibtisch/irData";
+		String data = "C:\\Users\\Christian-PC2\\Desktop\\data";
 		new Parser(data, CONSTANTS.DATA_DIRECTORY);
 		
 		

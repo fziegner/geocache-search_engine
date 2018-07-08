@@ -84,7 +84,7 @@ public class Indexer {
 				document.add(field);	
 			}
 		}
-		document.add(new StringField("contents", json.toString(), Field.Store.YES));
+		//document.add(new StringField("contents", json.toString(), Field.Store.YES));
 		
 		analyzer.close();
 		return document;
