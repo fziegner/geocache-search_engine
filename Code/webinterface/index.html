@@ -19,62 +19,14 @@
 				<img src="world.png" alt="World">
 			</div>
 			<div class="suche">						
-				<input typ="text" id="suche" name="suche">						
-				<button id="suchknopf" type="submit" onclick="executeRESTCall()">Suche</button><br>	
-				<button id="pprinttoconsole" onclick="pprint_json_to_console(executeRESTCall())">pprint console</button>
+				<input typ="text" id="suche" name="suche"><br><br>				
+				<button class="button" type="submit" onclick="executeRESTCall()">search</button>	
+				<button class="button" onclick="pprint_json_to_console(executeRESTCall())">pprint console</button>
+				<button class="button" onclick="pprint_json_to_website(executeRESTCall())">pprint website</button>	
+				<button class="button" onclick="print_results(executeRESTCall())">Print Results</button>
 			</div>
 			<div class="suche">	
-				<div class="suchergebnis">	
-					<div>
-						<button id="pprinttoweb" onclick="pprint_json_to_website(executeRESTCall())">pprint website</button>	
-						<button id="print" onclick="print_results(executeRESTCall())">Print Results</button>
-						<pre id="json"></pre><br>	
-					</div>
-					<!--
-					<div>
-						<h2>Name des Geo-Caches</h2>
-					</div>
-					<div>
-						<b>Koordinaten</b>
-						<div>12.34.56<br></div>
-					</div>
-					<div>
-						<b>Kurzbeschreibung</b>
-						<div>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. <br></div>
-					</div><br>
-					<button class="show" href="#" onclick="toggle_visibility('show_more');">Mehr anzeigen<br></button>
-						<div id="show_more" style="display:none;">							
-							<b>Status</b>
-							<div>12.34.56<br></div>
-
-							<b>Zustand</b>
-							<div>12.34.56<br></div>
-
-							<b>Versteckt am:</b>
-							<div>12.34.56<br></div>
-
-							<b>Wegpunkt</b>
-							<div>12.34.56<br></div>
-
-							<b>Land</b>
-							<div>12.34.56<br></div>
-
-							<b>Cacheart</b>
-							<div>12.34.56<br></div>
-
-							<b>Behälter</b>
-							<div>12.34.56<br></div>
-
-							<b>Online</b>
-							<div>12.34.56<br></div>
-
-							<b>Beschreibung</b>
-							<div>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.<br></div>
-
-							<b>Kommentare</b>
-							<div>12.34.56<br></div>-->
-						</div>
-				</div>
+				<pre class="suchergebnis" id="json">Ihre Suchergebnisse</pre><br>	
 			</div>
 		</main>
 		<footer>
