@@ -1,4 +1,4 @@
-const baseURL = "http://localhost:8080/geocache-search-engine/webapi/"
+const baseURL = "http://5.83.162.120:8080/geocache-search-engine/webapi/"
 const searchURL = baseURL + "search/"
 
 function executeRESTCall(){
@@ -38,7 +38,7 @@ function pprint_json_to_website(response) {
 function print_results(response) {
 	var resultset = "Results:\n\n";
 	for(var i = 0; i < response.length; i++) {
-		resultset = resultset + "ID: " + i + "\n";
+		resultset = resultset + "ID: ".bold() + i + "\n";
 		var obj = response[i];
 		console.log("id: " + i);
 		for(var key in obj) {
@@ -46,27 +46,27 @@ function print_results(response) {
 			console.log(key);
 			if(key == "name" || key == "coordinates" || key == "status" || key == "condition" || key == "hiddenAt" || key == "waypoint" || key == "cacheType" || key == "caseType" || key == "link" || key == "description") {
 				if(key == "name") {
-					resultset = resultset + "Name: " + value + "\n";
+					resultset = resultset + "Name: ".bold() + value + "\n";
 				}else if (key == "coordinates") {
-					resultset = resultset + "Koordinaten: " + value + "\n";
+					resultset = resultset + "Koordinaten: ".bold() + value + "\n";
 				}else if (key == "status") {
-					resultset = resultset + "Status: " + value + "\n";
+					resultset = resultset + "Status: ".bold() + value + "\n";
 				}else if (key == "condition") {
-					resultset = resultset + "Zustand: " + value + "\n";
+					resultset = resultset + "Zustand: ".bold() + value + "\n";
 				}else if (key == "hiddenAt") {
-					resultset = resultset + "Versteckt am: " + value + "\n";
+					resultset = resultset + "Versteckt am: ".bold() + value + "\n";
 				}else if (key == "waypoint") {
-					resultset = resultset + "Wegpunkt: " + value + "\n";
+					resultset = resultset + "Wegpunkt: ".bold() + value + "\n";
 				}else if (key == "cacheType") {
-					resultset = resultset + "Cacheart: " + value + "\n";
+					resultset = resultset + "Cacheart: ".bold() + value + "\n";
 				}else if (key == "caseType") {
-					resultset = resultset + "Behälter: " + value + "\n";
+					resultset = resultset + "Behälter: ".bold() + value + "\n";
 				}else if (key == "link") {
-					resultset = resultset + "Online: " + value + "\n";
+					resultset = resultset + "Online: ".bold() + value.link(value) + "\n";
 				}else if (key == "description") {
-					resultset = resultset + "Beschreibung: " + value + "\n";
+					resultset = resultset + "Beschreibung: ".bold() + value.substring(0,70) + "...\n";
 				}else if (key == "logs") {
-					resultset = resultset + "Logs: " + "PLACEHOLDER" + "\n";
+					resultset = resultset + "Logs: ".bold() + "PLACEHOLDER" + "\n";
 				}
 			}
 		}
