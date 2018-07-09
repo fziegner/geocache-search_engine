@@ -61,6 +61,11 @@
       	<artifactId>lucene-queryparser</artifactId>
       	<version>7.3.1</version>
       </dependency>
+      <dependency>
+      	<groupId>org.apache.lucene</groupId>
+      	<artifactId>lucene-suggest</artifactId>
+      	<version>7.3.1</version>
+      </dependency>
   </dependencies>
   <build>
     <finalName>geocache-search-engine</finalName>
