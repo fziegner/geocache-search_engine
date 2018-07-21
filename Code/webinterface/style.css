@@ -3,27 +3,41 @@
 /*XXXX { --> für all elements of that kind*/
 
 body {
-	background: #f9edc2;
+	background: url(world.png) no-repeat center #f9edc2;
+	background-attachment:fixed;
+	padding-bottom:50px;
+}
 
-	}
 
 header {
-	width:100%;
-	background: #161511;
-	padding:20px;
-	padding-left:20%;
-	padding-right:20%;
-	height: 60px;
+	overflow: hidden;
+	background:#161511;
+	padding: 5px 5px;
 	margin:-10px;
+
+}
+
+header a {
+	float: left;
+	color: white;
+	text-align: center;
+	padding-left: 20%;
+	text-decoration: none;
+	font-size: 18px;
+	line-height: 25px;
+	border-radius: 4px;
 }
 
 main {
-	padding-left:20%;
-	padding-right:20%;
+	padding-top:50px;
+	padding-bottom:20px;
+	margin-left:10%;
+	margin-right:10%;
 	text-align: center;	
 }
 
 footer {
+	position: fixed;
 	width:100%;
 	background: #161511;
 	padding:20px;
@@ -32,24 +46,17 @@ footer {
 	height: 30px;
 	margin:-10px;
 	color: white;
+	left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
 }
 
-
-.logoarea {
-    color: white;
-    
-
-}
-
-.suche {
-	padding-top:30px;
-	padding-bottom:20px;
-	margin-left:90px;
-	margin-right:90px;
-}
 #suche {
-	width:600px;
-	height:30px;
+	width:40%;
+	min-width: 200px;
+	height:40px;
+	margin: 2px;
 }
 
 .button {
@@ -61,6 +68,7 @@ footer {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+	margin: 2px;
 }
 
 .button:hover {
@@ -72,24 +80,63 @@ footer {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+	margin: 2px;
 }
 
-
-.suchergebnis {
-	text-align:left;
-	border-left:#4CAF50 2px solid;
-	border-right:#4CAF50 2px solid;
-	padding: 10px;
-	margin: 10px;
-
-}
-
-.show {
-	text-align:right;
-}
+#content {
+	margin-top: 70px;
+}	
 
 #json {
+	text-align:left;
+	margin:5px;
+	padding:5px;
+	background-color:rgba(255, 255, 255, 0.5);
+}
+
+.name {
+	border-top-style: dotted;
+	border-top-width: 1px;
+	border-bottom-style: dotted;
+	border-bottom-width: 1px;
+	letter-spacing: 0.3em;
+	font-size: 36px;
+	font-weight: bold;
+	margin: 5px;
+}
+
+.coordinates {
+}
+
+.status {
+}
+
+.condition {
+}
+
+.hiddenAt {
+}
+
+.waypoint {
+}	
+
+.cacheType {
+}
+
+.caseType {
+}
+
+.link {
+}
+
+.description {
+}	
+
+.logs {
 }
 
 
-	
+
+
+
+
