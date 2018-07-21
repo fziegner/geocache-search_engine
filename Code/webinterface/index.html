@@ -8,26 +8,20 @@
 	</head>
     <body>
 		<header>
-			<div class="logoarea">
-				<a href="index.html" >
-					<img src="logo.png" alt="Logo" width="60pt">
-				</a>Geo-Caching
-			</div>		
+			<a href="index.html">
+				<img src="logo.png" alt="Logo" width="60pt">
+				Geo-Caching
+			</a>
 		</header>
 		<main>
-			<div class="suche">
-				<img src="world.png" alt="World">
-			</div>
-			<div class="suche">						
-				<input typ="text" id="suche" name="suche"><br><br>				
+			<div>						
+				<input typ="text" id="suche" name="suche">				
 				<button class="button" type="submit" onclick="executeRESTCall()">search</button>	
 				<button class="button" onclick="pprint_json_to_console(executeRESTCall())">pprint console</button>
 				<button class="button" onclick="pprint_json_to_website(executeRESTCall())">pprint website</button>	
 				<button class="button" onclick="print_results(executeRESTCall())">Print Results</button>
-			</div>
-			<div class="suche">	
-				<pre class="suchergebnis" id="json">Ihre Suchergebnisse</pre><br>	
-			</div>
+			</div>	
+			<div id="content"></div>
 		</main>
 		<footer>
 			<div>Information Retrieval 2018
