@@ -1,11 +1,27 @@
 const baseURL = "http://5.83.162.120:8080/geocache-search-engine/webapi/";
 const searchURL = baseURL + "search/";
+const extendedSearch = searchURL + "extended/";
 
 function executeRESTCall(){
     let query = document.getElementById("suche").value;
+	//console.log(query);
     let xhttp = new XMLHttpRequest();
+    console.log("GET", searchURL + query);
     xhttp.open("GET", searchURL + query, false);
     xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
+    let response = JSON.parse(xhttp.responseText);
+    console.log(response);
+	return response;
+}
+
+function executeExtendedSearchRESTCall() {
+	let query = "hiddenAfter=" + document.getElementById("hiddenAfter").value +  "&coordinates=" + document.getElementById("coordinates").value + "&caseType=" + document.getElementById("caseType").value +  "&condition=" + document.getElementById("condition").value +  "&cacheType=" + document.getElementById("cacheType").value +  "&terrain=" + document.getElementById("terrain").value +  "&status=" + document.getElementById("status").value;
+	//console.log(query);
+	let xhttp = new XMLHttpRequest();
+	console.log("GET", extendedSearch + query);
+	xhttp.open("GET", extendedSearch + query, false);
+	xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
     let response = JSON.parse(xhttp.responseText);
     console.log(response);
@@ -117,4 +133,13 @@ function createResult(newClass, result, resultNr) {
 	} else {
 	document.getElementById(resultNr).appendChild(resultArea);
 	}
+}
+
+function showExtendedSearchOptions() {
+	var x = document.getElementById("extendedSearch");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
 }

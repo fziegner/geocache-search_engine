@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8">		
+		<meta charset="utf-8">
 		<link href="style.css" rel="stylesheet" type="text/css">
 		<title>Geo-Caching</title>
 		<script src="search.js"></script>
@@ -14,17 +14,37 @@
 			</a>
 		</header>
 		<main>
-			<div>						
-				<input typ="text" id="suche" name="suche">				
-				<button class="button" type="submit" onclick="executeRESTCall()">search</button>	
-				<button class="button" onclick="pprint_json_to_console(executeRESTCall())">pprint console</button>
-				<button class="button" onclick="pprint_json_to_website(executeRESTCall())">pprint website</button>	
-				<button class="button" onclick="print_results(executeRESTCall())">Print Results</button>
-			</div>	
+			<div>
+				<button class="button" onClick="showExtendedSearchOptions()">v</button>
+				<input typ="text" id="suche" name="suche">
+				<button class="button" onclick="print_results(executeRESTCall())">Search/Print Results</button><br>
+				
+				<div id="extendedSearch">
+					<label for="hiddenAfter">hiddenAfter</label>
+					<input typ="text" id="hiddenAfter" name="hiddenAfter"><br>
+					<label for="coordinates">coordinates</label>
+					<input typ="text" id="coordinates" name="coordinates"><br>
+					<label for="caseType">caseType</label>
+					<input typ="text" id="caseType" name="caseType"><br>
+					<label for="condition">condition</label>
+					<input typ="text" id="condition" name="condition"><br>
+					<label for="cacheType">cacheType</label>
+					<input typ="text" id="cacheType" name="cacheType"><br>
+					<label for="terrain">terrain</label>
+					<input typ="text" id="terrain" name="terrain"><br>
+					<label for="status">status</label>
+					<input typ="text" id="status" name="status"><br>
+					<button class="button" onClick="executeExtendedSearchRESTCall()">Extended Search</button>
+				</div>
+				
+			</div>
 			<div id="content"></div>
 		</main>
 		<footer>
 			<div>Information Retrieval 2018
+				<button class="button" type="submit" onclick="executeRESTCall()">search</button>
+				<button class="button" onclick="pprint_json_to_console(executeRESTCall())">pprint console</button>
+				<button class="button" onclick="pprint_json_to_website(executeRESTCall())">pprint website</button>
 			</div>
 		</footer>
 	</body> 
