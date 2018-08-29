@@ -16,7 +16,38 @@ function executeRESTCall(){
 }
 
 function executeExtendedSearchRESTCall() {
-	let query = "hiddenAfter=" + document.getElementById("hiddenAfter").value +  "&coordinates=" + document.getElementById("coordinates").value + "&caseType=" + document.getElementById("caseType").value +  "&condition=" + document.getElementById("condition").value +  "&cacheType=" + document.getElementById("cacheType").value +  "&terrain=" + document.getElementById("terrain").value +  "&status=" + document.getElementById("status").value;
+	let hiddenAfter = document.getElementById("hiddenAfter").value;
+	let coordinates =document.getElementById("coordinates").value;
+	let caseType = document.getElementById("caseType").value;
+	let condition = document.getElementById("condition").value;
+	let cacheType = document.getElementById("cacheType").value;
+	let terrain = document.getElementById("terrain").value;
+	let status = document.getElementById("status").value;
+	
+	if(hiddenAfter === "") {
+		hiddenAfter = "NULL"
+	}
+	if(coordinates === "") {
+		coordinates = "NULL"
+	}
+	if(caseType === "") {
+		caseType = "NULL"
+	}
+	if(condition === "") {
+		condition = "NULL"
+	}
+	if(cacheType === "") {
+		cacheType = "NULL"
+	}
+	if(terrain === "") {
+		terrain = "NULL"
+	}
+	if(status === "") {
+		status = "NULL"
+	}
+	
+	//let query = "hiddenAfter=" + document.getElementById("hiddenAfter").value +  "&coordinates=" + document.getElementById("coordinates").value + "&caseType=" + document.getElementById("caseType").value +  "&condition=" + document.getElementById("condition").value +  "&cacheType=" + document.getElementById("cacheType").value +  "&terrain=" + document.getElementById("terrain").value +  "&status=" + document.getElementById("status").value;
+	let query = "hiddenAfter=" + hiddenAfter +  "&coordinates=" + coordinates + "&caseType=" + caseType +  "&condition=" + condition +  "&cacheType=" + cacheType +  "&terrain=" + terrain +  "&status=" + status;
 	//console.log(query);
 	let xhttp = new XMLHttpRequest();
 	console.log("GET", extendedSearch + query);
