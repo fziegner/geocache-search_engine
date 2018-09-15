@@ -1,5 +1,6 @@
 package ir.SearchEngine.GeocacheSearchEngine;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -18,9 +19,11 @@ import javax.ws.rs.core.Response;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.util.BytesRef;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import ir.SearchEngine.GeocacheSearchEngine.Model.Geocache;
 import ir.SearchEngine.GeocacheSearchEngine.Parser.FileIO;
 
 @Path("/search")
@@ -36,7 +39,7 @@ public class SearchResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response search(@PathParam("query") String query) {
 		System.out.println("you searched for: " + query);
-		Searcher searcher;
+		Searcher searcher = null;
 		TopDocs docs;
 		ScoreDoc[] hits; 
 		List<String> cacheWaypoints = new ArrayList<String>();
@@ -62,6 +65,14 @@ public class SearchResource {
 		} catch (org.apache.lucene.queryparser.classic.ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		finally {
+			try {
+				searcher.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		JSONArray caches = new JSONArray();
@@ -137,15 +148,33 @@ public class SearchResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response searchSuggestion(@PathParam("query") String query) {
 		
-		List<String> suggestions = new ArrayList<String>();
-		
-		//TODO do the search and put the result into the suggestions arraylist
-		
+		List<String> suggestions = null;
+		try {
+			Suggester suggester = new Suggester();
+	        ArrayList<Geocache> geocaches = new ArrayList<Geocache>();
+	        suggester.getSuggester().build(new GeocacheIterator(geocaches.iterator()));
+	         
+	        File[] files = new File(CONSTANTS.DATA_DIRECTORY).listFiles();
+			for (File file : files) {
+				JSONObject json = new JSONObject(Indexer.readFile(file));
+				BytesRef name = new BytesRef(json.getString("name"));
+				int weight = json.getJSONArray("logs").length();
+				suggester.getSuggester().add(name, null, weight, null);
+			}
+	        
+	        suggester.getSuggester().refresh();
+	
+	        suggestions = suggester.lookup(suggester.getSuggester(), query);
+	        
+	        suggester.close();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		
 		JSONObject json = new JSONObject();
 		json.put("suggestions", suggestions);
-		
 		
 		return Response.status(200).entity(json.toString()).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
 	}
