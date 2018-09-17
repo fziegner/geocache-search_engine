@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -119,11 +121,59 @@ public class SearchResource {
 								 @QueryParam("status") String status) {
 		//queryParams that are not given in the url have either the specified default or NULL value, same applies for query: if not present it is NULL
 		//TODO if range is set, but no coordinates supplied, use center of germany
-		
+		Searcher searcher = null;
+		TopDocs docs;
+		ScoreDoc[] hits; 
 		List<String> cacheWaypoints = new ArrayList<String>();
+		Map<String, String> values = new HashMap<String, String>();
+		if(hiddenAfter != null) {
+			values.put("hiddenAfter", hiddenAfter);
+		}
+		if(caseType != null) {
+			values.put("caseType", caseType);
+		}
+		if(condition != null) {
+			values.put("condition",  condition);
+		}
+		if(cacheType != null) {
+			values.put("cacheType",  cacheType);
+		}
+		if(terrain != null) {
+			values.put("terrain",  terrain);
+		}
+		if(status != null) {
+			values.put("status",  status);
+		}
+		
 		
 		//TODO search this massive boi, put waypoints into cacheWaypoints just as in normal search
-		
+		try {
+			//execute the search in the index
+			searcher = new Searcher(CONSTANTS.INDEX_DIRECTORY);
+			docs = searcher.searchExtended(query, values);
+			hits = docs.scoreDocs;
+			System.out.println("number of hits: " + hits.length);
+			for(int i = 0; i < hits.length; i++) {
+				Document d = searcher.getDocument(hits[i]);
+				String waypoint = d.get("waypoint");
+				cacheWaypoints.add(waypoint);
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (org.apache.lucene.queryparser.classic.ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				searcher.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		JSONArray caches = new JSONArray();
 		for(String waypoint : cacheWaypoints) {
@@ -132,8 +182,8 @@ public class SearchResource {
 			caches.put(new JSONObject(jsonStr));
 		}
 		
-		//return Response.status(200).entity(caches.toString()).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
-		return Response.status(200).entity("{\"status\":\"not yet implemented\"}").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
+		return Response.status(200).entity(caches.toString()).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
+		//return Response.status(200).entity("{\"status\":\"not yet implemented\"}").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
 		
 	}
 	
