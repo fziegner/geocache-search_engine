@@ -1,20 +1,15 @@
 package ir.SearchEngine.GeocacheSearchEngine;
 
 import java.io.File;
-<<<<<<< HEAD
 import java.io.IOException;
-=======
->>>>>>> 72b602945df34f7aad9e53ecbb82d825a895ef54
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-<<<<<<< HEAD
-=======
+
 import javax.ws.rs.Produces;
->>>>>>> 72b602945df34f7aad9e53ecbb82d825a895ef54
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -57,7 +52,7 @@ public class SuggestionResource {
 	        
 	       suggester.close();
 
-		catch(Exception e) {
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
