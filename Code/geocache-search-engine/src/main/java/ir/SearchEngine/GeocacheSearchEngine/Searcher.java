@@ -43,7 +43,7 @@ public class Searcher {
 	}
 	
 	public TopDocs search(String searchQuery) throws IOException, ParseException, org.apache.lucene.queryparser.classic.ParseException {
-	  	query = queryParser.parse(searchQuery);
+		query = queryParser.parse(searchQuery);
 	  	System.out.println("parsed query: " + query);
 	  	return indexSearcher.search(query, CONSTANTS.MAX_SEARCH_RESULTS);
 	}

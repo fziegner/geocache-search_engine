@@ -31,7 +31,7 @@ public class Suggester {
 		return this.suggester;
 	}
 	
-    public List<String> lookup(AnalyzingInfixSuggester suggester, String name) throws ClassNotFoundException, IOException {
+    public List<String> lookup(String name) throws ClassNotFoundException, IOException {
             List<Lookup.LookupResult> results;
             List<String> suggestions = new ArrayList<String>();
             results = suggester.lookup(name, 2, true, false);

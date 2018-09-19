@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,6 +25,7 @@ import ir.SearchEngine.GeocacheSearchEngine.Model.Geocache;
 public class SuggestionResource {
 	
 	private Suggester suggester = new Suggester();
+	private ReadWriteLock lock = new ReentrantReadWriteLock();
 	{
 		try {	
 		    ArrayList<Geocache> geocaches = new ArrayList<Geocache>();
@@ -43,17 +46,21 @@ public class SuggestionResource {
 	}
 	@GET
 	@Path("/{query}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response suggest(@PathParam("query") String query) {
 
 		List<String> suggestions = null;
+		lock.readLock().lock();
 		try {
 		
-	        suggestions = suggester.lookup(suggester.getSuggester(), query);
+	        suggestions = suggester.lookup(query);
 	        
-	       suggester.close();
+	      suggester.close();
 
 		}catch(Exception e) {
 			e.printStackTrace();
+		}finally {
+			lock.readLock().unlock();
 		}
 		
 		JSONObject json = new JSONObject();
