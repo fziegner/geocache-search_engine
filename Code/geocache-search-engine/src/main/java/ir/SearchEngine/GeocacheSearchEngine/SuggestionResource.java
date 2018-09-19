@@ -17,12 +17,13 @@ import org.json.JSONObject;
 
 import ir.SearchEngine.GeocacheSearchEngine.Model.Geocache;
 
+@Path("/suggest")
 public class SuggestionResource {
 	
 	Suggester suggester = new Suggester();
 	@GET
-	@Path("/suggest/build")
-	public void buildSuggester() {
+	@Path("/build")
+	public Response buildSuggester() {
 		
 		try {
 	        ArrayList<Geocache> geocaches = new ArrayList<Geocache>();
@@ -41,6 +42,8 @@ public class SuggestionResource {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+		return Response.status(200).build();
 	}
 	
 	/**
@@ -50,14 +53,14 @@ public class SuggestionResource {
 	 * @return JSON containing the search suggestions as a JSONArray ( {"suggestions":[.....]} )
 	 */
 	@GET
-	@Path("/suggest/{query}")
+	@Path("/{query}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response searchSuggestion(@PathParam("query") String query) {
 
 		List<String> suggestions = null;
 		try {
-	        suggestions = suggester.lookup(query);
-	        suggester.close();
+	        suggestions = suggester.lookup(suggester.getSuggester(),query);
+	        //suggester.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -70,7 +73,7 @@ public class SuggestionResource {
 	}
 	
 	@GET
-	@Path("/suggest/close")
+	@Path("/close")
 	public void closeSuggester() {
 
 		try {
