@@ -14,11 +14,17 @@ public class Suggester {
 
     GermanAnalyzer analyzer;
     AnalyzingInfixSuggester suggester;
-	FSDirectory index_dir = FSDirectory.open(Paths.get(CONSTANTS.SUGGESTER_DIRECTORY));
+	FSDirectory index_dir = null;
     
-	public Suggester() throws IOException {
+	public Suggester(){
 		analyzer = new GermanAnalyzer();
-		suggester = new AnalyzingInfixSuggester(index_dir, analyzer);
+		try {
+			index_dir = FSDirectory.open(Paths.get(CONSTANTS.SUGGESTER_DIRECTORY));
+			suggester = new AnalyzingInfixSuggester(index_dir, analyzer);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public AnalyzingInfixSuggester getSuggester() {
