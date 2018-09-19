@@ -30,7 +30,7 @@ public class Suggester {
 	public AnalyzingInfixSuggester getSuggester() {
 		return this.suggester;
 	}
-	
+
     public List<String> lookup(String name) throws ClassNotFoundException, IOException {
             List<Lookup.LookupResult> results;
             List<String> suggestions = new ArrayList<String>();

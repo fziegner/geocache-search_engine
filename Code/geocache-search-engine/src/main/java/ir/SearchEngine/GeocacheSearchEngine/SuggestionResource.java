@@ -1,16 +1,12 @@
 package ir.SearchEngine.GeocacheSearchEngine;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -24,24 +20,28 @@ import ir.SearchEngine.GeocacheSearchEngine.Model.Geocache;
 @Path("/suggest")
 public class SuggestionResource {
 	
-	private Suggester suggester = new Suggester();
-	private ReadWriteLock lock = new ReentrantReadWriteLock();
+	private Suggester suggester;
 	{
-		try {	
-		    ArrayList<Geocache> geocaches = new ArrayList<Geocache>();
-		    this.suggester.getSuggester().build(new GeocacheIterator(geocaches.iterator()));
-		     
-		    File[] files = new File(CONSTANTS.DATA_DIRECTORY).listFiles();
-			for (File file : files) {
-				JSONObject json = new JSONObject(Indexer.readFile(file));
-				BytesRef name = new BytesRef(json.getString("name"));
-				int weight = json.getJSONArray("logs").length();
-				suggester.getSuggester().add(name, null, weight, null);
+		if(SuggesterHelper.getLock() == false) {
+			SuggesterHelper.enableLock();
+			try {
+				suggester = new Suggester();
+			    ArrayList<Geocache> geocaches = new ArrayList<Geocache>();
+			    this.suggester.getSuggester().build(new GeocacheIterator(geocaches.iterator()));
+			     
+			    File[] files = new File(CONSTANTS.DATA_DIRECTORY).listFiles();
+				for (File file : files) {
+					JSONObject json = new JSONObject(Indexer.readFile(file));
+					BytesRef name = new BytesRef(json.getString("name"));
+					int weight = json.getJSONArray("logs").length();
+					suggester.getSuggester().add(name, null, weight, null);
+				}
+			    suggester.getSuggester().refresh();
+			    SuggesterHelper.setSuggester(suggester);
 			}
-		    suggester.getSuggester().refresh();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	@GET
@@ -50,24 +50,17 @@ public class SuggestionResource {
 	public Response suggest(@PathParam("query") String query) {
 
 		List<String> suggestions = null;
-		lock.readLock().lock();
 		try {
-		
-	        suggestions = suggester.lookup(query);
-	        
-	      suggester.close();
-
-		}catch(Exception e) {
+			suggestions = SuggesterHelper.getSuggester().lookup(query);
+	        //suggester.close();
+		} catch(Exception e) {
 			e.printStackTrace();
-		}finally {
-			lock.readLock().unlock();
 		}
 		
 		JSONObject json = new JSONObject();
 		json.put("suggestions", suggestions);
 		
 		return Response.status(200).entity(json.toString()).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
-
 	}
 	
 	@GET
