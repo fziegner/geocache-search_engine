@@ -1,6 +1,5 @@
 package ir.SearchEngine.GeocacheSearchEngine;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -21,11 +20,9 @@ import javax.ws.rs.core.Response;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.util.BytesRef;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import ir.SearchEngine.GeocacheSearchEngine.Model.Geocache;
 import ir.SearchEngine.GeocacheSearchEngine.Parser.FileIO;
 
 @Path("/search")
@@ -185,48 +182,5 @@ public class SearchResource {
 		return Response.status(200).entity(caches.toString()).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
 		//return Response.status(200).entity("{\"status\":\"not yet implemented\"}").header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
 		
-	}
-	
-	/**
-	 * REST Method for search suggestions
-	 * expected usage: for every kestroke on the frontend execute this call and show the results
-	 * @param query Query to get suggestions for
-	 * @return JSON containing the search suggestions as a JSONArray ( {"suggestions":[.....]} )
-	 */
-	@GET
-	@Path("/suggest/{query}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response searchSuggestion(@PathParam("query") String query) {
-		
-		List<String> suggestions = null;
-		try {
-			Suggester suggester = new Suggester();
-	        ArrayList<Geocache> geocaches = new ArrayList<Geocache>();
-	        suggester.getSuggester().build(new GeocacheIterator(geocaches.iterator()));
-	         
-	        File[] files = new File(CONSTANTS.DATA_DIRECTORY).listFiles();
-			for (File file : files) {
-				JSONObject json = new JSONObject(Indexer.readFile(file));
-				BytesRef name = new BytesRef(json.getString("name"));
-				int weight = json.getJSONArray("logs").length();
-				suggester.getSuggester().add(name, null, weight, null);
-			}
-	        
-	        suggester.getSuggester().refresh();
-	
-	        suggestions = suggester.lookup(suggester.getSuggester(), query);
-	        
-	        suggester.close();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-		JSONObject json = new JSONObject();
-		json.put("suggestions", suggestions);
-		
-		return Response.status(200).entity(json.toString()).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON + ";charset=UTF-8").build();
-	}
-	
+	}	
 }

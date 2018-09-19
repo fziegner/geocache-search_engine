@@ -14,18 +14,27 @@ public class Suggester {
 
     GermanAnalyzer analyzer;
     AnalyzingInfixSuggester suggester;
-	FSDirectory index_dir = FSDirectory.open(Paths.get(CONSTANTS.SUGGESTER_DIRECTORY));
+	FSDirectory index_dir;
     
-	public Suggester() throws IOException {
+	public Suggester() {
+		try {
+			index_dir = FSDirectory.open(Paths.get(CONSTANTS.SUGGESTER_DIRECTORY));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		analyzer = new GermanAnalyzer();
-		suggester = new AnalyzingInfixSuggester(index_dir, analyzer);
+		try {
+			suggester = new AnalyzingInfixSuggester(index_dir, analyzer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public AnalyzingInfixSuggester getSuggester() {
 		return this.suggester;
 	}
 	
-    public List<String> lookup(AnalyzingInfixSuggester suggester, String name) throws ClassNotFoundException, IOException {
+    public List<String> lookup(String name) throws ClassNotFoundException, IOException {
             List<Lookup.LookupResult> results;
             List<String> suggestions = new ArrayList<String>();
             results = suggester.lookup(name, 2, true, false);
