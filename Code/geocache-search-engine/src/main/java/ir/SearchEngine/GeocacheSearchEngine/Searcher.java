@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.de.GermanAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.CorruptIndexException;
@@ -34,12 +36,21 @@ public class Searcher {
 	public Searcher(String indexDirectoryPath) throws IOException {
 		FSDirectory indexDirectory = FSDirectory.open(Paths.get(indexDirectoryPath));
 		System.out.println("open Searcher on: " + indexDirectory.toString());
-		Analyzer analyzer = new GermanAnalyzer();
+		CharArraySet stopwords = GermanAnalyzer.getDefaultStopSet();
+		stopwords.add("Geocache");
+		stopwords.add("geocach");
+		stopwords.add("cache");
+		stopwords.add("geocache");
+		Analyzer analyzer = new GermanAnalyzer(stopwords);
+		
 	  	indexReader = DirectoryReader.open(indexDirectory);
 	  	indexSearcher = new IndexSearcher(indexReader);
+	  	Map<String, Float> boosts = new HashMap<String, Float>();
+	  	boosts.put("name", 2.5f);
+	  	boosts.put("description", 1.5f);
 	  	queryParser = new MultiFieldQueryParser(
 	  			new String[] {"waypoint", "name", "logs", "description", "coordinates", "hiddenAt", "descriptionSnippet", "cacheType", "difficulty", "terrain", "caseType", "condition", "status"},
-                analyzer);
+                analyzer, boosts);
 	}
 	
 	public TopDocs search(String searchQuery) throws IOException, ParseException, org.apache.lucene.queryparser.classic.ParseException {
@@ -58,7 +69,12 @@ public class Searcher {
 	
 	public TopDocs searchExtended(String searchQuery, Map<String, String> values) throws org.apache.lucene.queryparser.classic.ParseException, IOException {
 		List<Query> queries = new ArrayList<Query>();
-		Analyzer analyzer = new GermanAnalyzer();
+		CharArraySet stopwords = GermanAnalyzer.getDefaultStopSet();
+		stopwords.add("Geocache");
+		stopwords.add("cache");
+		stopwords.add("geocach");
+		stopwords.add("geocache");
+		Analyzer analyzer = new GermanAnalyzer(stopwords);
 		query = queryParser.parse(searchQuery);
 		queries.add(query);
 		String[] fields = values.keySet().toArray(new String[0]);
