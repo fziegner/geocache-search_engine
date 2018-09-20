@@ -1,21 +1,24 @@
 const baseURL = "http://5.83.162.120:8080/geocache-search-engine/webapi/";
 const searchURL = baseURL + "search/";
 const extendedSearch = searchURL + "extended/";
+const suggestions = baseURL + "suggest/";
+const logs = baseURL + "logs/";
 
 function executeRESTCall(){
-    let query = document.getElementById("suche").value;
-	//console.log(query);
-    let xhttp = new XMLHttpRequest();
-    console.log("GET", searchURL + query);
-    xhttp.open("GET", searchURL + query, false);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send();
-    let response = JSON.parse(xhttp.responseText);
-    console.log(response);
+  let query = document.getElementById("suche").value;
+  //console.log(query);
+  let xhttp = new XMLHttpRequest();
+  console.log("GET", searchURL + query);
+  xhttp.open("GET", searchURL + query, false);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.send();
+  let response = JSON.parse(xhttp.responseText);
+  console.log(response);
 	return response;
 }
 
 function executeExtendedSearchRESTCall() {
+  let search = document.getElementById("suche").value;
 	let hiddenAfter = document.getElementById("hiddenAfter").value;
 	let coordinates =document.getElementById("coordinates").value;
 	let caseType = document.getElementById("caseType").value;
@@ -23,7 +26,31 @@ function executeExtendedSearchRESTCall() {
 	let cacheType = document.getElementById("cacheType").value;
 	let terrain = document.getElementById("terrain").value;
 	let status = document.getElementById("status").value;
-	
+
+  let query = search + "?";
+
+  if(!(hiddenAfter === "")) {
+    query = query + "hiddenAfter=" + hiddenAfter;
+  }
+  if(!(coordinates === "")) {
+		query = query + "&coordinates=" + coordinates;
+	}
+	if(!(caseType === "")) {
+		query = query + "&caseType=" + caseType;
+	}
+	if(!(condition === "")) {
+		query = query + "&condition=" + condition;
+	}
+	if(!(cacheType === "")) {
+		query = query + "&cacheType=" + cacheType;
+	}
+	if(!(terrain === "")) {
+		query = query + "&terrain=" + terrain;
+	}
+	if(!(status === "")) {
+		query = query + "&status=" + status;
+	}
+  /*
 	if(hiddenAfter === "") {
 		hiddenAfter = "NULL"
 	}
@@ -45,37 +72,37 @@ function executeExtendedSearchRESTCall() {
 	if(status === "") {
 		status = "NULL"
 	}
-	
+  */
 	//let query = "hiddenAfter=" + document.getElementById("hiddenAfter").value +  "&coordinates=" + document.getElementById("coordinates").value + "&caseType=" + document.getElementById("caseType").value +  "&condition=" + document.getElementById("condition").value +  "&cacheType=" + document.getElementById("cacheType").value +  "&terrain=" + document.getElementById("terrain").value +  "&status=" + document.getElementById("status").value;
-	let query = "hiddenAfter=" + hiddenAfter +  "&coordinates=" + coordinates + "&caseType=" + caseType +  "&condition=" + condition +  "&cacheType=" + cacheType +  "&terrain=" + terrain +  "&status=" + status;
-	//console.log(query);
+	//let query = search + "?hiddenAfter=" + hiddenAfter +  "&coordinates=" + coordinates + "&caseType=" + caseType +  "&condition=" + condition +  "&cacheType=" + cacheType +  "&terrain=" + terrain +  "&status=" + status;
+  //console.log(query);
 	let xhttp = new XMLHttpRequest();
 	console.log("GET", extendedSearch + query);
 	xhttp.open("GET", extendedSearch + query, false);
 	xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send();
-    let response = JSON.parse(xhttp.responseText);
-    console.log(response);
+  xhttp.send();
+  let response = JSON.parse(xhttp.responseText);
+  console.log(response);
 	return response;
 }
 
 function toggle_visibility(id) {
-       var e = document.getElementById(id);
-       if(e.style.display == 'block')
-          e.style.display = 'none';
-       else
-          e.style.display = 'block';
+  var e = document.getElementById(id);
+  if(e.style.display == 'block')
+    e.style.display = 'none';
+  else
+    e.style.display = 'block';
 }
 
 function pprint_json_to_console(response) {
-	for(var i = 0; i < response.length; i++) {
-		console.log("array index: " + i);
-		var obj = response[i];
-		for(var key in obj) {
-			var value = obj[key];
-			console.log(key +  ": " + value);
-		}
-	}
+  for(var i = 0; i < response.length; i++) {
+  	console.log("array index: " + i);
+  	var obj = response[i];
+  	for(var key in obj) {
+  		var value = obj[key];
+  		console.log(key +  ": " + value);
+  	}
+  }
 }
 
 function pprint_json_to_website(response) {
@@ -143,22 +170,21 @@ function print_results(response) {
 			}
 		}
 		resultset = resultset + "\n";
-
 	}
 	/*document.getElementById("json").innerHTML = resultset;*/
 }
 
 function createArea(newId, bigId) {
-    var resultArea = document.createElement("DIV");
+  var resultArea = document.createElement("DIV");
 	resultArea.setAttribute("id", newId);
 	document.getElementById(bigId).appendChild(resultArea);
 }
 
 function createResult(newClass, result, resultNr) {
-    var resultArea = document.createElement("DIV");
+  var resultArea = document.createElement("DIV");
 	resultArea.className = newClass;
-    var result = document.createTextNode(result);
-    resultArea.appendChild(result);
+  var result = document.createTextNode(result);
+  resultArea.appendChild(result);
 	if (newClass == "name"){
 	document.getElementById(resultNr).prepend(resultArea);
 	} else {
@@ -168,9 +194,55 @@ function createResult(newClass, result, resultNr) {
 
 function showExtendedSearchOptions() {
 	var x = document.getElementById("extendedSearch");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+function getSuggestions() {
+  let query = document.getElementById("suche").value;
+  let xhttp = new XMLHttpRequest();
+  console.log("GET", suggestions + query);
+  xhttp.open("GET", suggestions + query, false);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.send();
+  let response = JSON.parse(xhttp.responseText);
+  console.log(response);
+  return response;
+}
+
+function autocomplete() {
+  var suggestionsRe = getSuggestions();
+  var list = document.getElementById('suche');
+  for(var i = 0; i < suggestionsRe.length; i++) {
+    var option = document.createElement('option');
+    option.value = item;
+    list.appendChild(option);
+  }
+}
+
+function removeElement(id) {
+  var element = document.getElementById(id);
+  return element.parentNode.removeChild(element);
+}
+
+function parseSuggestions() {
+  var suggestionsRe = getSuggestions();
+  console.log(suggestionsRe);
+  var jString = JSON.stringify(suggestionsRe);
+  jString = jString.replace("{\"suggestions\":[", " ");
+  jString = jString.replace("]}", " ");
+  var choices = jString.split(',');
+  //console.log(JSON.stringify(suggestionsRe));
+  console.log(jString);
+  console.log(choices);
+  return choices;
+}
+
+function postLogs() {
+  let xhttp = new XMLHttpRequest();
+  xhttp.open("POST", logs + log, false);
+
 }

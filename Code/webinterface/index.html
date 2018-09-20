@@ -5,6 +5,9 @@
 		<link href="style.css" rel="stylesheet" type="text/css">
 		<title>Geo-Caching</title>
 		<script src="search.js"></script>
+
+		<link href="auto-complete.css" rel="stylesheet" type="text/css">
+		<script src="auto-complete.min.js"></script>
 	</head>
     <body>
 		<header>
@@ -16,9 +19,13 @@
 		<main>
 			<div>
 				<button class="button" onClick="showExtendedSearchOptions()">v</button>
-				<input typ="text" id="suche" name="suche">
+				<input typ="text" id="suche" name="suche" list="suggestionsServ"/>
+					<datalist id="suggestionsServ">
+
+					</datalist>
 				<button class="button" onclick="print_results(executeRESTCall())">Search/Print Results</button><br>
-				
+				<button class="button" onclick="print_results(getSuggestions())">Suggestions Test</button><br>
+
 				<div id="extendedSearch">
 					<label for="hiddenAfter">hiddenAfter</label>
 					<input typ="text" id="hiddenAfter" name="hiddenAfter"><br>
@@ -34,9 +41,9 @@
 					<input typ="text" id="terrain" name="terrain"><br>
 					<label for="status">status</label>
 					<input typ="text" id="status" name="status"><br>
-					<button class="button" onClick="executeExtendedSearchRESTCall()">Extended Search</button>
+					<button class="button" onClick="print_results(executeExtendedSearchRESTCall())">Extended Search</button>
 				</div>
-				
+
 			</div>
 			<div id="content"></div>
 		</main>
@@ -47,5 +54,26 @@
 				<button class="button" onclick="pprint_json_to_website(executeRESTCall())">pprint website</button>
 			</div>
 		</footer>
-	</body> 
+
+		<script>
+		var demo1 = new autoComplete({
+		            selector: '#suche',
+		            minChars: 1,
+		            source: function(term, suggest){
+		                term = term.toLowerCase();
+		                var choices = [];
+										var temp = parseSuggestions();
+										for(var i = 0; i < temp.length; i++) {
+											if(!choices.includes(temp[i])) {
+												choices.push(temp[i]);
+											}
+										}
+		                var suggestions = [];
+		                for (i=0;i<choices.length;i++)
+		                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+		                suggest(suggestions);
+		            }
+		        });
+		</script>
+	</body>
 </html>
