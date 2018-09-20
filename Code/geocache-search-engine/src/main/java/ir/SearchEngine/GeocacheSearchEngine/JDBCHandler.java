@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class JDBCHandler {
 
 	
-	private static final String url = "jdbc:postgresql://localhost:5432/geocache-search";
+	private static final String url = "jdbc:postgresql://localhost:5432/geocacheSearch";
 	private static final String user = "postgres";
 	private static final String password = "geocache";
 	private Connection con;
