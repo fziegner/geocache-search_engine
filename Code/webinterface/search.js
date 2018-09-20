@@ -13,7 +13,8 @@ function executeRESTCall(){
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send();
   let response = JSON.parse(xhttp.responseText);
-  console.log(response);
+  //console.log(response);
+  postLogs();
 	return response;
 }
 
@@ -117,10 +118,10 @@ function print_results(response) {
 		resultset = resultset + "ID: ".bold() + i + "\n";
 		createArea(i, "json");
 		var obj = response[i];
-		console.log("id: " + i);
+		//console.log("id: " + i);
 		for(var key in obj) {
 			var value = obj[key];
-			console.log(key);
+			//console.log(key);
 			if(key == "name" || key == "coordinates" || key == "status" || key == "condition" || key == "hiddenAt" || key == "waypoint" || key == "cacheType" || key == "caseType" || key == "link" || key == "description") {
 				if(key == "name") {
 					resultset = resultset + "Name: ".bold() + value + "\n";
@@ -242,7 +243,16 @@ function parseSuggestions() {
 }
 
 function postLogs() {
-  let xhttp = new XMLHttpRequest();
-  xhttp.open("POST", logs + log, false);
+  let ips = getIPs(function(ip){ips = String(console.log(ip));});
+  let waypoint = "PLACEHOLDER WAYPOINT";
+  let query = document.getElementById('suche').value;
+  let time = getCurrentTime();
+  let toLog = ips + "/" + waypoint + "/" + query + "/" + time;
+  //let xhttp = new XMLHttpRequest();
+  //xhttp.open("POST", logs, false);
+  console.log(toLog);
+}
 
+function getCurrentTime() {
+  return Date.now();
 }
