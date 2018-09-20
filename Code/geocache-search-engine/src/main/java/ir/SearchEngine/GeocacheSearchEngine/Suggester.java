@@ -34,7 +34,7 @@ public class Suggester {
     public List<String> lookup(String name) throws ClassNotFoundException, IOException {
             List<Lookup.LookupResult> results;
             List<String> suggestions = new ArrayList<String>();
-            results = suggester.lookup(name, 2, true, false);
+            results = suggester.lookup(name, CONSTANTS.MAX_SUGGESTION_RESULTS, true, false);
             System.out.println("Suggestions for: \"" + name + ":");
             for (Lookup.LookupResult result : results) {
                 System.out.println(result.key);
