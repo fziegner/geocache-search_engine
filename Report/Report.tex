@@ -9,7 +9,10 @@
 %Grafikpaket
 \usepackage{graphicx}
 \usepackage{scrpage2}
+\usepackage{color}
 \usepackage{hyperref}
+\definecolor{light-gray}{gray}{0.85}
+\renewcommand\emph[1]{\colorbox{light-gray}{\texttt{#1}}}
 \pagestyle{scrheadings}
 \clearscrheadfoot
 %\Chapter sorgt dafür, dass kein Seitenvorschub auftritt.
@@ -78,9 +81,49 @@ Interessant ist hierbei, dass durch dieses Dokument sämtliche Informationen aus
 
 
 \Chapter{Architektur}
-tbc
+\section{Grobstruktur}
+Die Geocache Suchmaschine funktioniert nach dem Client-Server Prinzip. Als Programmiersprachen wurde für das Backend Java und für den Client natives HTML/CSS und JavaScript verwendet. Das Frontend empfängt angeforderte Daten vom Server (im Wesentlichen Beantwortung der Suchanfragen) über eine REST-Schnittstelle, welche mit Hilfe des Jersey - Frameworks \footnote{https://jersey.github.io/} erstellt wurde.
+
+\section{Backend}
+Der Server wird als Webapplikation mit Hilfe einer Tomcat-Instanz als Container betrieben. Die Suchmaschine wurde mittels Apache Lucene \footnote{http://lucene.apache.org/} implementiert. Daneben existiert eine REST-Schnittstelle zur Kommunikation mit dem Frontend. Im Folgenden werden die einzelnen Bestandteile genauer erläutert.
+
+\section{Kommunikation}
+Über das Resource-Package des Servers werden Daten zum und vom Frontend gesendet. Es existieren GET-Requests zum Suchen (sowohl einfache als auch erweiterte Suche) und für das Empfangen von Suggestions. Ein weiterer POST-Request ermöglicht das Übertragen des Loggings an den Server. Die strikte Trennung zwischen Backend und Frontend ermöglicht beispielsweise das einfache Austauschen des Frontends oder die Anbindung an bereits bestehende Services.
+
+\section{Parsing der Dokumente}
+Bevor der Index für die Suchmaschine erstellt werden kann, müssen die vorhandenen .txt-Dateien in ein verarbeitbares Format gebracht werden. Aufgrund der Leichtgewichtigkeit und intuitiver Lesbarkeit wird das JSON-Format verwendet.
+Jedes Dokument wird zeilenweise in den Parser eingelesen. Anhand der bereits vorhandenen Key-Value-artigen Strukturen (siehe Abbildung \ref{img:struktur}) wird nach den Keys gesucht, diese entfernt, und die übrigen Values, d.h. die eigentlichen Daten, zu einem Java-Objekt zusammengefasst. Die Abbildung \ref{img:objekt} zeigt dieses. 
+
+\begin{figure}
+	\centering
+	\includegraphics[height=0.3\textheight]{cache_objekt.png}
+	\caption{Java Objekt zur Repräsentation eines Caches}
+	\label{img:objekt}
+\end{figure}
+
+Zuletzt wird dieses Objekt mit Hilfe der org.json Library \footnote{https://github.com/stleary/JSON-java} in ein JSON Objekt überführt und schließlich in eine .json-Datei geschrieben. Der Name der Datei setzt sich aus dem Waypoint-Attribut des Geocaches zusammen, welches eine eindeutige Zuordnung ermöglicht. Dieses Attribut wird bereits durch die Rohdaten von opencaching.de geliefert. \emph{TODO BILD VOM JSON}
+Die .txt - Rohdaten werden ab diesem Zeitpunkt nicht mehr benötigt.
+
+\section{Architektur der Suchmaschine}
+
+\subsection{Index}
+Der Index wird anhand der zuvor erstellten json - Dateien konfiguriert. Jeder Geocache stellt hierbei ein eigenes Document im Index dar. Analog erhält jedes Attribut des Geocache-Java-Objekts ein eigenes Field. Lediglich auf die Attribute Tipps und Link wird verzichtet, da diese für den Index irrelevante Information enthalten (Tipps sind in Caesar-Chiffre verschlüsselt, Link ist ein HTML-Link auf opencaching.de). Es ist äußert unwahrscheinlich, dass derartige Suchqueries auftreten. Die übrigen Attribute werden mittels 3-Grammen indexiert. Dies ist besonders effizient für einen ``Search-as-you-type``-Ansatz, da Edge-N-Gramme genau den Fluss der Eingabe widerspiegeln. Aus Zeitgründen wurde diese Methode leider nicht mehr umgesetzt.
+
+\subsection{Suche}
+ Die Geocache-Suchmaschine ermöglicht zwei Arten der Suche: Zum einen eine standardmäßige Suche mittels einer Query, und desweiteren eine erweiterte Suchmaske, durch welche zusätzliche Suchparameter einbezogen werden können.
+
+\subsubsection{einfache Suche}
+Die einfache Suche ermöglicht die Eingabe eines Query-Strings, nach welchem der Index durchsucht werden soll. Es können sowohl die Lucene-Query-Syntax als auch natürlichsprachige Anfragen beantwortet werden. Als QueryParser wird ein \emph{MultiFieldQueryParser} verwendet. Dieser sucht in allen Fields der Dokumente nach der Query. Zuvor werden durch einen GermanAnalyzer sowohl alle ``normalen`` Stoppworte der deutschen Sprache, als auch domänenspezifische Stoppworte, gefiltert. Diese umfassen die Worte ``Geocache`` und ``Cache``, da diese für die Semantik der Suche nicht von Bedeutung sind (nahezu alle Dokumente enthalten das Wort Geocache oder Cache, da diese das Thema sind). Würde man diese Worte nicht filtern, so würden Ergebnisse stark verfälscht werden (nähere Erläuterungen siehe Kapitel \ref{evaluation}).
+
+\subsubsection{erweiterte Suche}
+Die erweiterte Suche bietet genau wie die einfache Suche die Möglichkeit zur Eingabe eines Query Strings. Zusätzlich dazu können Parameter, welche die Suche verfeinern, angegeben werden (z.B. nur Suche nach bestimmten Cache-Arten). Jeder Parameter repräsentiert dabei ein Field im Document. Für jeden angegebenen Parameter wird ein separater \emph{SimpleQueryParser} verwendet, der im jeweilig korrespondierenden Field sucht. Die Query wird analog zur einfachen Suche verarbeitet. Im letzten Schritt werden nun die einzelnen Queries für die Parameter mit der Suchquery verschmolzen, um im Endeffekt nur eine einzige Suche durchführen zu müssen. Dies geschieht mit Hilfe eines \emph{BooleanQuery.Builder}'s mit dem Junktor \emph{BooleanOccur.MUST}.
+
+\subsection{Suggestions}
+Die Suchmaschine besitzt eine Autocompletion in etwas abgewandelter Form als gebräuchlich. Anstatt die Query beim Tippen Wort für Wort zu vervollständigen, werden stattdessen direkt Namen von Caches vorgeschlagen, welche zur aktuellen Eingabe passen. Da in der deutschen Sprache sowohl Prä -  als auch Suffixe verbreitet sind, müssen diese geeignet erkannt werden, um falsche bzw. nicht ausreichend passende Vorschläge auszuschließen. Hierbei wird ein \emph{AnalyzingInfixSuggester} verwendet, welcher von Lucene bereitgestellt wird. Da dieser Suggester einen eigenen Lookup-Index aufbaut, muss Redundanz in Kauf genommen werden. Dieser Index ist jedoch deutlich kleiner als der eigentliche Suchindex, da er lediglich die Namen der Caches indexiert und alle übrigen Informationen ignoriert. Das Ranking des AnalyzingInfixSuggester's erfordert eine Gewichtung. Diese wird anhand der Anzahl der Logs berechnet. Caches, die mehr Logs enthalten, sind stärker frequentiert und damit tendenziell relevanter als Andere mit weniger Logeinträgen. Somit werden diese als Erstes vorgeschlagen.
 
 
-\Chapter{Evaluation}
+
+
+\Chapter{Evaluation} \label{evaluation}
 tbc
 \end{document}
