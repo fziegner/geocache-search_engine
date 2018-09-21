@@ -2,9 +2,9 @@ package ir.SearchEngine.GeocacheSearchEngine;
 
 import java.io.IOException;
 
+import ir.SearchEngine.GeocacheSearchEngine.Indexer.Indexer;
 import ir.SearchEngine.GeocacheSearchEngine.Parser.Parser;
-import ir.SearchEngine.GeocacheSearchEngine.indexer.Indexer;
-import ir.SearchEngine.GeocacheSearchEngine.util.CONSTANTS;
+import ir.SearchEngine.GeocacheSearchEngine.Util.CONSTANTS;
 
 public class Main {
 

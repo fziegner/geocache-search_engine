@@ -1,4 +1,4 @@
-package ir.SearchEngine.GeocacheSearchEngine.suggester;
+package ir.SearchEngine.GeocacheSearchEngine.Suggester;
 
 import java.util.Comparator;
 import java.util.Iterator;

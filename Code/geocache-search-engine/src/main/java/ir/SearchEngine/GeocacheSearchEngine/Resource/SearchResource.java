@@ -1,4 +1,4 @@
-package ir.SearchEngine.GeocacheSearchEngine.resource;
+package ir.SearchEngine.GeocacheSearchEngine.Resource;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -24,8 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import ir.SearchEngine.GeocacheSearchEngine.Parser.FileIO;
-import ir.SearchEngine.GeocacheSearchEngine.searcher.Searcher;
-import ir.SearchEngine.GeocacheSearchEngine.util.CONSTANTS;
+import ir.SearchEngine.GeocacheSearchEngine.Searcher.Searcher;
+import ir.SearchEngine.GeocacheSearchEngine.Util.CONSTANTS;
 
 @Path("/search")
 public class SearchResource {

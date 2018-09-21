@@ -1,11 +1,11 @@
-package ir.SearchEngine.GeocacheSearchEngine.resource;
+package ir.SearchEngine.GeocacheSearchEngine.Resource;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-import ir.SearchEngine.GeocacheSearchEngine.util.JDBCHandler;
+import ir.SearchEngine.GeocacheSearchEngine.Util.JDBCHandler;
 
 @Path("/logs")
 public class LogResource {

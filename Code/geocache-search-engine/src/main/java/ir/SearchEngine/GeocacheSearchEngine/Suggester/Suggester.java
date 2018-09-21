@@ -1,4 +1,4 @@
-package ir.SearchEngine.GeocacheSearchEngine.suggester;
+package ir.SearchEngine.GeocacheSearchEngine.Suggester;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -10,7 +10,7 @@ import org.apache.lucene.search.suggest.Lookup;
 import org.apache.lucene.search.suggest.analyzing.AnalyzingInfixSuggester;
 import org.apache.lucene.store.FSDirectory;
 
-import ir.SearchEngine.GeocacheSearchEngine.util.CONSTANTS;
+import ir.SearchEngine.GeocacheSearchEngine.Util.CONSTANTS;
 
 public class Suggester {
 

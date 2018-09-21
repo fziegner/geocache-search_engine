@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import ir.SearchEngine.GeocacheSearchEngine.util.CONSTANTS;
+import ir.SearchEngine.GeocacheSearchEngine.Util.CONSTANTS;
 
 @MultipartConfig
 public class UploadServlet extends HttpServlet {
