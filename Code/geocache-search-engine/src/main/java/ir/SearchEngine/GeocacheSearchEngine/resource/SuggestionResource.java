@@ -70,7 +70,7 @@ public class SuggestionResource {
 	
 	@GET
 	@Path("/close")
-	public void closeSuggester() {
+	public Response closeSuggester() {
 
 		try {
 	        suggester.close();
@@ -78,5 +78,6 @@ public class SuggestionResource {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		return Response.status(200).build();
 	}
 }
