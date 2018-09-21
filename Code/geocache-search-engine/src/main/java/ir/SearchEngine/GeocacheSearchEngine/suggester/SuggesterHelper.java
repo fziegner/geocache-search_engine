@@ -1,4 +1,4 @@
-package ir.SearchEngine.GeocacheSearchEngine;
+package ir.SearchEngine.GeocacheSearchEngine.suggester;
 
 public class SuggesterHelper {
 	

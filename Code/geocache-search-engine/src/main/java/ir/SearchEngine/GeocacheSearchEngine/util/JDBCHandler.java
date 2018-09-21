@@ -1,4 +1,4 @@
-package ir.SearchEngine.GeocacheSearchEngine;
+package ir.SearchEngine.GeocacheSearchEngine.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

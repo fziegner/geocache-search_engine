@@ -1,4 +1,4 @@
-package ir.SearchEngine.GeocacheSearchEngine;
+package ir.SearchEngine.GeocacheSearchEngine.resource;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +16,11 @@ import org.apache.lucene.util.BytesRef;
 import org.json.JSONObject;
 
 import ir.SearchEngine.GeocacheSearchEngine.Model.Geocache;
+import ir.SearchEngine.GeocacheSearchEngine.indexer.Indexer;
+import ir.SearchEngine.GeocacheSearchEngine.suggester.GeocacheIterator;
+import ir.SearchEngine.GeocacheSearchEngine.suggester.Suggester;
+import ir.SearchEngine.GeocacheSearchEngine.suggester.SuggesterHelper;
+import ir.SearchEngine.GeocacheSearchEngine.util.CONSTANTS;
 
 @Path("/suggest")
 public class SuggestionResource {

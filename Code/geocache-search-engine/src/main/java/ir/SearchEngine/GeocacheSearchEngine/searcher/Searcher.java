@@ -1,4 +1,4 @@
-package ir.SearchEngine.GeocacheSearchEngine;
+package ir.SearchEngine.GeocacheSearchEngine.searcher;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -25,6 +25,8 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
+
+import ir.SearchEngine.GeocacheSearchEngine.util.CONSTANTS;
 
 public class Searcher {
 		

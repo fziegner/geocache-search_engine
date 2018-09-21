@@ -1,4 +1,4 @@
-package ir.SearchEngine.GeocacheSearchEngine;
+package ir.SearchEngine.GeocacheSearchEngine.indexer;
 
 import java.io.BufferedReader;
 import java.io.File;

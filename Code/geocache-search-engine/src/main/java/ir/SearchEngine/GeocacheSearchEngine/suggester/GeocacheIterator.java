@@ -1,4 +1,4 @@
-package ir.SearchEngine.GeocacheSearchEngine;
+package ir.SearchEngine.GeocacheSearchEngine.suggester;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -14,7 +14,7 @@ public class GeocacheIterator implements InputIterator{
 	private Iterator<Geocache> geocacheIterator;
     private Geocache currentGeocache;
 
-    GeocacheIterator(Iterator<Geocache> geocacheIterator) {
+    public GeocacheIterator(Iterator<Geocache> geocacheIterator) {
         this.geocacheIterator = geocacheIterator;
     }
 

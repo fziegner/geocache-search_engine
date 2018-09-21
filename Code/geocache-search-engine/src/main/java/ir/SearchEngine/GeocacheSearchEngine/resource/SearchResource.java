@@ -1,4 +1,4 @@
-package ir.SearchEngine.GeocacheSearchEngine;
+package ir.SearchEngine.GeocacheSearchEngine.resource;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -24,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import ir.SearchEngine.GeocacheSearchEngine.Parser.FileIO;
+import ir.SearchEngine.GeocacheSearchEngine.searcher.Searcher;
+import ir.SearchEngine.GeocacheSearchEngine.util.CONSTANTS;
 
 @Path("/search")
 public class SearchResource {
@@ -143,7 +145,6 @@ public class SearchResource {
 		}
 		
 		
-		//TODO search this massive boi, put waypoints into cacheWaypoints just as in normal search
 		try {
 			//execute the search in the index
 			searcher = new Searcher(CONSTANTS.INDEX_DIRECTORY);

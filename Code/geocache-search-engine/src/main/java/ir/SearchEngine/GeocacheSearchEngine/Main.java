@@ -3,6 +3,8 @@ package ir.SearchEngine.GeocacheSearchEngine;
 import java.io.IOException;
 
 import ir.SearchEngine.GeocacheSearchEngine.Parser.Parser;
+import ir.SearchEngine.GeocacheSearchEngine.indexer.Indexer;
+import ir.SearchEngine.GeocacheSearchEngine.util.CONSTANTS;
 
 public class Main {
 
