@@ -28,7 +28,7 @@
 				<button class="button" onclick="print_results(getSuggestions())">Suggestions Test</button><br>
 
 				<div id="extendedSearch">
-					<label for="hiddenAfter">hiddenAfter</label>
+					<label for="hiddenAfter">hiddenAt</label>
 					<input typ="text" id="hiddenAfter" name="hiddenAfter"><br>
 					<label for="coordinates">coordinates</label>
 					<input typ="text" id="coordinates" name="coordinates"><br>
@@ -37,11 +37,22 @@
 					<label for="condition">condition</label>
 					<input typ="text" id="condition" name="condition"><br>
 					<label for="cacheType">cacheType</label>
-					<input typ="text" id="cacheType" name="cacheType"><br>
+					<!--<input typ="text" id="cacheType" name="cacheType"><br>-->
+					<select id="cacheType" name="cacheType">
+						<option value=""></option>
+						<option value="nano">nano</option>
+						<option value="mikro">mikro</option>
+						<option value="klein">klein</option>
+						<option value="normal">normal</option>
+						<option value="groß">groß</option>
+						<option value="extrem groß">extrem groß</option>
+					</select>
 					<label for="terrain">terrain</label>
 					<input typ="text" id="terrain" name="terrain"><br>
 					<label for="status">status</label>
 					<input typ="text" id="status" name="status"><br>
+					<label for="difficulty">difficulty</label>
+					<input typ="text" id="difficulty" name="difficulty"><br>
 					<button class="button" onClick="print_results(executeExtendedSearchRESTCall())">Extended Search</button>
 				</div>
 

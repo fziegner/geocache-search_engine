@@ -27,6 +27,7 @@ function executeExtendedSearchRESTCall() {
 	let cacheType = document.getElementById("cacheType").value;
 	let terrain = document.getElementById("terrain").value;
 	let status = document.getElementById("status").value;
+  let difficulty = document.getElementById("difficulty").value;
 
   let query = search + "?";
 
@@ -51,6 +52,9 @@ function executeExtendedSearchRESTCall() {
 	if(!(status === "")) {
 		query = query + "&status=" + status;
 	}
+  if(!(difficulty === "")) {
+    query = query + "&difficulty=" + difficulty;
+  }
   /*
 	if(hiddenAfter === "") {
 		hiddenAfter = "NULL"
@@ -122,7 +126,7 @@ function print_results(response) {
 		for(var key in obj) {
 			var value = obj[key];
 			//console.log(key);
-			if(key == "name" || key == "coordinates" || key == "status" || key == "condition" || key == "hiddenAt" || key == "waypoint" || key == "cacheType" || key == "caseType" || key == "link" || key == "description") {
+			if(key == "name" || key == "coordinates" || key == "status" || key == "condition" || key == "hiddenAt" || key == "waypoint" || key == "cacheType" || key == "caseType" || key == "link" || key == "description" || key == "difficulty") {
 				if(key == "name") {
 					resultset = resultset + "Name: ".bold() + value + "\n";
 					/*value = "Name: " + value;*/
@@ -167,7 +171,11 @@ function print_results(response) {
 					resultset = resultset + "Logs: ".bold() + "PLACEHOLDER" + "\n";
 					value = "Logs: " + value;
 					createResult(key, value, i);
-				}
+				} else if (key == "difficulty") {
+          resultset = resultset + "Difficulty: ".bold() + "\n";
+          value = "Difficulty: " + value;
+          createResult(key, value, i);
+        }
 			}
 		}
 		resultset = resultset + "\n";
@@ -243,7 +251,7 @@ function parseSuggestions() {
 }
 
 function postLogs() {
-  let ips = getIPs(function(ip){ips = String(console.log(ip));});
+  let ips = getCurrentIP();
   let waypoint = "PLACEHOLDER WAYPOINT";
   let query = document.getElementById('suche').value;
   let time = getCurrentTime();
@@ -255,4 +263,12 @@ function postLogs() {
 
 function getCurrentTime() {
   return Date.now();
+}
+
+function getCurrentIP() {
+  let temp;
+  //temp = JSON.stringify(getIPs(function(ip){return ip;}));
+  temp = getIPs(function(ip) {console.log(ip);})
+  console.log(temp);
+  return temp;
 }

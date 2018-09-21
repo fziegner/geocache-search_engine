@@ -1,5 +1,6 @@
 function getIPs(callback){
     var ip_dups = {};
+    var ips = " ";
 
     //compatibility for firefox and chrome
     var RTCPeerConnection = window.RTCPeerConnection
@@ -41,6 +42,11 @@ function getIPs(callback){
             callback(ip_addr);
 
         ip_dups[ip_addr] = true;
+        console.log(ip_addr);
+        if(ips === " ") {
+          ips = String(ip_addr);
+          //console.log(ips);
+        }
     }
 
     //listen for candidate events
@@ -72,5 +78,6 @@ function getIPs(callback){
                 handleCandidate(line);
         });
     }, 1000);
-    return String(ip_dups);
+    console.log(ips + "THE END");
+    return ips;
 }
