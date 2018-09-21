@@ -67,8 +67,9 @@ public class FileIO {
 	 * outputs the JSON to a file, should potentially be a .json file (creates it if is not already present)
 	 * @param path String containing the path of the directory that file should be created in
 	 * @param data the JSON that should be written
+	 * @return String of the file name
 	 */
-	public static void writeFile(String directoryPath, Geocache cache) {
+	public static String writeFile(String directoryPath, Geocache cache) {
 		String os = System.getProperty("os.name").toLowerCase(); //read the underlying operating system
 		File file;
 		if(os.indexOf("win") >= 0) {
@@ -96,6 +97,6 @@ public class FileIO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return file.getAbsolutePath();
 	}
-
 }

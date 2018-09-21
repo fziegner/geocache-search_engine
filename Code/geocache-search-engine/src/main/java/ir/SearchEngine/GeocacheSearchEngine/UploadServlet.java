@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import ir.SearchEngine.GeocacheSearchEngine.Model.Geocache;
+import ir.SearchEngine.GeocacheSearchEngine.Parser.FileIO;
+import ir.SearchEngine.GeocacheSearchEngine.Parser.Parser;
 import ir.SearchEngine.GeocacheSearchEngine.Util.CONSTANTS;
 
 @MultipartConfig
@@ -35,10 +38,16 @@ public class UploadServlet extends HttpServlet {
 		    
 	        InputStream fileContent = filePart.getInputStream();
 		    Files.copy(fileContent, file.toPath());
+		    fileContent.close();
+		    
+		    Geocache geocache = Parser.parse(file.toPath().toString());
+		    file.delete();
+		    String filePath = FileIO.writeFile(CONSTANTS.DATA_DIRECTORY, geocache);
+		    
 		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		    Date resultDate = new Date(System.currentTimeMillis());
 		    request.setAttribute("fileName", fileName);
-		    request.setAttribute("filePath", file.getAbsolutePath());
+		    request.setAttribute("filePath", filePath);
 		    request.setAttribute("uploadTime", sdf.format(resultDate));
 		    RequestDispatcher rd = request.getRequestDispatcher("/panel.jsp");
 		    rd.forward(request, response);
