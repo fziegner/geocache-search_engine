@@ -10,6 +10,8 @@
 \usepackage{graphicx}
 \usepackage{scrpage2}
 \usepackage{color}
+\usepackage{array}
+\usepackage{booktabs}
 \usepackage{hyperref}
 \definecolor{light-gray}{gray}{0.85}
 \renewcommand\emph[1]{\colorbox{light-gray}{\texttt{#1}}}
@@ -113,7 +115,7 @@ Der Index wird anhand der zuvor erstellten json - Dateien konfiguriert. Jeder Ge
  Die Geocache-Suchmaschine ermöglicht zwei Arten der Suche: Zum einen eine standardmäßige Suche mittels einer Query, und desweiteren eine erweiterte Suchmaske, durch welche zusätzliche Suchparameter einbezogen werden können.
 
 \subsubsection{einfache Suche}
-Die einfache Suche ermöglicht die Eingabe eines Query-Strings, nach welchem der Index durchsucht werden soll. Es können sowohl die Lucene-Query-Syntax als auch natürlichsprachige Anfragen beantwortet werden. Als QueryParser wird ein \emph{MultiFieldQueryParser} verwendet. Dieser sucht in allen Fields der Dokumente nach der Query. Zuvor werden durch einen GermanAnalyzer sowohl alle ``normalen`` Stoppworte der deutschen Sprache, als auch domänenspezifische Stoppworte, gefiltert. Diese umfassen die Worte ``Geocache`` und ``Cache``, da diese für die Semantik der Suche nicht von Bedeutung sind (nahezu alle Dokumente enthalten das Wort Geocache oder Cache, da diese das Thema sind). Würde man diese Worte nicht filtern, so würden Ergebnisse stark verfälscht werden (nähere Erläuterungen siehe Kapitel \ref{evaluation}).
+Die einfache Suche ermöglicht die Eingabe eines Query-Strings, nach welchem der Index durchsucht werden soll. Es können sowohl die Lucene-Query-Syntax als auch natürlichsprachige Anfragen beantwortet werden. Als QueryParser wird ein \emph{MultiFieldQueryParser} verwendet. Dieser sucht in allen Fields der Dokumente nach der Query. Zuvor werden durch einen GermanAnalyzer sowohl alle ``normalen`` Stoppworte der deutschen Sprache, als auch domänenspezifische Stoppworte, gefiltert. Diese umfassen die Worte ``Geocache`` und ``Cache``, da diese für die Semantik der Suche nicht von Bedeutung sind (nahezu alle Dokumente enthalten das Wort Geocache oder Cache, da diese das Thema sind). Würde man diese Worte nicht filtern, so würden Ergebnisse stark verfälscht werden (nähere Erläuterungen siehe Kapitel \ref{evaluation}). Nach eingänglicher Betrachtung der Dokumente wurde sichtbar, dass zum einen der Name des Caches und zum anderen die Beschreibung die Felder sind, welche die meisten, d.h. die am such-relevantesten, Informationen enthalten. Aus diesem Grunde erhalten der Name einen Boost von $2.5$ und die Beschreibung einen Boost von $1.5$. Denkbar wäre auch ein Boost für die Logs zu etablieren, jedoch enthalten diese bei genauerer Betrachtung vielmals ``nur`` Vermerke über das Auffinden, sowie persönliche Kommentare zu Schönheit des Caches oder Tauschverhalten. Aus diesem Grunde werden die Logs nicht geboostet.
 
 \subsubsection{erweiterte Suche}
 Die erweiterte Suche bietet genau wie die einfache Suche die Möglichkeit zur Eingabe eines Query Strings. Zusätzlich dazu können Parameter, welche die Suche verfeinern, angegeben werden (z.B. nur Suche nach bestimmten Cache-Arten). Jeder Parameter repräsentiert dabei ein Field im Document. Für jeden angegebenen Parameter wird ein separater \emph{SimpleQueryParser} verwendet, der im jeweilig korrespondierenden Field sucht. Die Query wird analog zur einfachen Suche verarbeitet. Im letzten Schritt werden nun die einzelnen Queries für die Parameter mit der Suchquery verschmolzen, um im Endeffekt nur eine einzige Suche durchführen zu müssen. Dies geschieht mit Hilfe eines \emph{BooleanQuery.Builder}'s mit dem Junktor \emph{BooleanOccur.MUST}.
@@ -125,5 +127,35 @@ Die Suchmaschine besitzt eine Autocompletion in etwas abgewandelter Form als geb
 
 
 \Chapter{Evaluation} \label{evaluation}
-tbc
+
+Zur Evaluation wurden insgesamt 14 Topics erstellt, die exemplarisch die Mehrheit der möglichen Suchanfragen abdecken sollen. Es handelt sich dabei um Stichwortsuchen und Phrasensuchen sowohl mit als auch ohne erweiterte Suchparameter. Für jedes Topic wurden die besten 10 Suchergebnisse evaluiert. Das Relevanzmaß ist \textit{Precision@k} und daraus resultierende \textit{Average Precision}.  Tabelle \ref{table:eval} zeigt die verwendeten Suchquery mit ihren jeweils errechneten Precisions. Es ergibt sich letztendlich eine \textit{Mean Average Precision} von $0.60$.
+
+\begin{table}
+\caption{Topics zur Evaluation}
+\label{table:eval}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{cllc}
+\toprule
+ID 	&	Suchquery							&	Kategorie 				&	Average Precision\\
+\midrule
+1	&	\textit{Geocache im Wald}					&	Stichwortsuche			&	$1.00$\\
+2	&	\textit{sonniger Geocache}				&	Stichwortsuche			&	$0.58$\\
+3	&	\textit{Leipzig Auenwald}					&	Stichwortsuche			&	$0.64$\\
+4	&	\textit{Fahrrad erreichbar}				&	Phrasensuche			&	$0.62$\\
+5	&	\textit{leicht zu finden}					&	Phrasensuche			&	$0.13$\\
+6	&	\textit{Cache mit Aussicht}				&	Stichwortsuche			&	$1.00$\\
+7	&	\textit{See in Leipzig + cacheType=Multicache}	&	Stichwortsuche mit Parameter	& 	$0.5$\\
+8	&	\textit{Erzgebirge}						&	Stichwortsuche			&	$1$\\
+9	&	\textit{Stadt + caseType=mikro}				&	Stichwortsuche mit Parameter	&	$0.43$\\
+10	&	\textit{Brandenburg + condition=ok + difficulty=2} 	&	Stichwortsuche mit Parameter	&	$0.64$\\
+11	&	\textit{weit entfernt + cacheType=Multicache}	&	Phrasensuche mit Parameter	&	$0.23$\\
+12	&	\textit{keine Hinweise}					&	Phrasensuche			&	$0.14$\\
+13	&	\textit{Hund mitnehmen}					&	Stichwortsuche			&	$0.57$\\
+14	&	\textit{virtueller Cache nahe Berlin}			&	Phrasensuche			&	$0.93$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Aus der Tabelle lassen sich eine Reihe von Schlüssen ziehen:
+
 \end{document}
