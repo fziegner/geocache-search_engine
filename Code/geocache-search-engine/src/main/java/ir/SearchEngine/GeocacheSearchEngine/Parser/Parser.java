@@ -1,9 +1,8 @@
 package ir.SearchEngine.GeocacheSearchEngine.Parser;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 
 import org.json.JSONObject;
 
@@ -48,7 +47,12 @@ public class Parser {
 	 */
 	public static Geocache parse(String path) {
 		Geocache geocache = new Geocache();
-		String cacheString = FileIO.readFile(path);
+		String cacheString = "";
+		try {
+			cacheString = new String(FileIO.readFile(path).getBytes(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new AssertionError("UTF-8 is unknown");
+		}
 		String[] lines = cacheString.split("\n"); //separate every line
 		boolean[] flags = new boolean[14];
 		for(int i = 0; i < lines.length; i++) {
@@ -88,7 +92,7 @@ public class Parser {
 					String cacheType = lines[i].replace("Cacheart: ",  "");
 					geocache.setCacheType(cacheType);
 				}
-				if(lines[i].contains("Beh√§lter: ") && flags[7] == false) {
+				if(lines[i].contains("Beh‰lter: ") && flags[7] == false) {
 					flags[7] = true;
 					String caseType = lines[i].replace("Beh√§lter: ",  "");
 					geocache.setCaseType(caseType);
@@ -122,7 +126,7 @@ public class Parser {
 					geocache.setDescription(stringBuilder.toString());
 					//System.out.println(stringBuilder);
 				}
-				if(lines[i].contains("Zus√§tzliche Hinweise:") && flags[12] == false) {
+				if(lines[i].contains("Zus‰tzliche Hinweise:") && flags[12] == false) {
 					flags[12] = true;
 					StringBuilder stringBuilder = new StringBuilder();
 					int x = i+2; //skip the line with the first <===================>
@@ -132,7 +136,7 @@ public class Parser {
 					}
 					geocache.setTips(stringBuilder.toString());
 				}
-				if(lines[i].contains("Logeintr√§ge:") && flags[13] == false) {
+				if(lines[i].contains("Logeintr‰ge:") && flags[13] == false) {
 					flags[13] = true;
 					StringBuilder stringBuilder = new StringBuilder();
 					int documentLength = lines.length-1;

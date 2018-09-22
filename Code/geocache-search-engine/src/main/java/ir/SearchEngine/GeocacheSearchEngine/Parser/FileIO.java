@@ -7,13 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONObject;
 
 import ir.SearchEngine.GeocacheSearchEngine.Model.Geocache;
 
@@ -85,9 +83,8 @@ public class FileIO {
 			file = new File(directoryPath + "\\" + cache.getWaypoint() + ".json"); //default is windows
 		}
 		
-		
 		try {
-			Writer w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+			Writer w = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), Charset.forName("UTF-8")));
 			w.write(cache.toJSON().toString());
 			w.close();
 		} catch (FileNotFoundException e) {
