@@ -8,7 +8,7 @@
 
 		<link href="auto-complete.css" rel="stylesheet" type="text/css">
 		<script src="auto-complete.min.js"></script>
-		<script src="getIP.js"></script>
+		<script type="text/javascript" src="https://www.l2.io/ip.js?var=myip"></script>
 	</head>
     <body>
 		<header>
@@ -21,38 +21,72 @@
 			<div>
 				<button class="button" onClick="showExtendedSearchOptions()">v</button>
 				<input typ="text" id="suche" name="suche" list="suggestionsServ"/>
-					<datalist id="suggestionsServ">
-
-					</datalist>
+					<datalist id="suggestionsServ"></datalist>
 				<button class="button" onclick="print_results(executeRESTCall())">Search/Print Results</button><br>
 				<button class="button" onclick="print_results(getSuggestions())">Suggestions Test</button><br>
-
 				<div id="extendedSearch">
 					<label for="hiddenAfter">hiddenAt</label>
-					<input typ="text" id="hiddenAfter" name="hiddenAfter"><br>
+					<input typ="text" id="hiddenAfter" name="hiddenAfter" style="width:194px"><br>
 					<label for="coordinates">coordinates</label>
-					<input typ="text" id="coordinates" name="coordinates"><br>
+					<input typ="text" id="coordinates" name="coordinates" style="width:194px"><br>
 					<label for="caseType">caseType</label>
-					<input typ="text" id="caseType" name="caseType"><br>
+					<select id="caseType" name="caseType" style="width:200px">
+					  <option value=""></option>
+					  <option value="nano">nano</option>
+					  <option value="mikro">mikro</option>
+					  <option value="klein">klein</option>
+					  <option value="normal">normal</option>
+					  <option value="groß">groß</option>
+					  <option value="extrem groß">extrem groß</option>
+					</select><br>
 					<label for="condition">condition</label>
-					<input typ="text" id="condition" name="condition"><br>
-					<label for="cacheType">cacheType</label>
-					<!--<input typ="text" id="cacheType" name="cacheType"><br>-->
-					<select id="cacheType" name="cacheType">
+					<!--<input typ="text" id="condition" name="condition" style="width:194px"><br>-->
+					<select id="condition" name="condition" style="width:200px">
 						<option value=""></option>
-						<option value="nano">nano</option>
-						<option value="mikro">mikro</option>
-						<option value="klein">klein</option>
-						<option value="normal">normal</option>
-						<option value="groß">groß</option>
-						<option value="extrem groß">extrem groß</option>
-					</select>
+						<option value="ok">ok</option>
+					</select><br>
+					<label for="cacheType">cacheType</label>
+					<select id="cacheType" name="cacheType" style="width:200px">
+						<option value=""></option>
+						<option value="normaler Cache">normaler Cache</option>
+						<option value="Multicache">Multicache</option>
+						<option value="Rätselcache">Rätselcache</option>
+						<option value="virtueller Cache">virtueller Cache</option>
+						<option value="">PLACEHOLDER</option>
+						<option value="">PLACEHOLDER</option>
+					</select><br>
 					<label for="terrain">terrain</label>
-					<input typ="text" id="terrain" name="terrain"><br>
+					<select id ="terrain" name="terrain" style="width:200px">
+					  <option value=""></option>
+					  <option value="1">1.0</option>
+					  <option value="1.5">1.5</option>
+					  <option value="2">2.0</option>
+					  <option value="2.5">2.5</option>
+					  <option value="3">3.0</option>
+					  <option value="3.5">3.5</option>
+					  <option value="4">4.0</option>
+					  <option value="4.5">4.5</option>
+					  <option value="5">5.0</option>
+					</select><br>
 					<label for="status">status</label>
-					<input typ="text" id="status" name="status"><br>
+					<select id="status" name="status" style="width:200px">
+						<option value=""></option>
+						<option value="kann gesucht werden">kann gesucht werden</option>
+						<option value"PLACEHOLDER">PLACEHOLDER</option>
+					</select><br>
 					<label for="difficulty">difficulty</label>
-					<input typ="text" id="difficulty" name="difficulty"><br>
+					<select id ="difficulty" name="difficulty" style="width:200px">
+					  <option value=""></option>
+					  <option value="1">1.0</option>
+					  <option value="1.5">1.5</option>
+					  <option value="2">2.0</option>
+					  <option value="2.5">2.5</option>
+					  <option value="3">3.0</option>
+					  <option value="3.5">3.5</option>
+					  <option value="4">4.0</option>
+					  <option value="4.5">4.5</option>
+					  <option value="5">5.0</option>
+					</select><br>
 					<button class="button" onClick="print_results(executeExtendedSearchRESTCall())">Extended Search</button>
 				</div>
 
@@ -64,6 +98,7 @@
 				<button class="button" type="submit" onclick="executeRESTCall()">search</button>
 				<button class="button" onclick="pprint_json_to_console(executeRESTCall())">pprint console</button>
 				<button class="button" onclick="pprint_json_to_website(executeRESTCall())">pprint website</button>
+				<button class="button" onClick="location.href='http://5.83.162.120:8080/geocache-search-engine/panel.jsp'">AdminPanel</button>
 			</div>
 		</footer>
 

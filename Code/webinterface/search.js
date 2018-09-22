@@ -14,7 +14,8 @@ function executeRESTCall(){
   xhttp.send();
   let response = JSON.parse(xhttp.responseText);
   //console.log(response);
-  postLogs();
+  let waypoints = getCurrentWaypoints(response);
+  postLogs(waypoints);
 	return response;
 }
 
@@ -87,7 +88,9 @@ function executeExtendedSearchRESTCall() {
 	xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send();
   let response = JSON.parse(xhttp.responseText);
-  console.log(response);
+  //console.log(response);
+  let waypoints = getCurrentWaypoints(response);
+  postLogs(waypoints);
 	return response;
 }
 
@@ -126,7 +129,7 @@ function print_results(response) {
 		for(var key in obj) {
 			var value = obj[key];
 			//console.log(key);
-			if(key == "name" || key == "coordinates" || key == "status" || key == "condition" || key == "hiddenAt" || key == "waypoint" || key == "cacheType" || key == "caseType" || key == "link" || key == "description" || key == "difficulty") {
+			if(key == "name" || key == "coordinates" || key == "status" || key == "condition" || key == "hiddenAt" || key == "waypoint" || key == "cacheType" || key == "caseType" || key == "link" || key == "description" || key == "difficulty" || key == "terrain") {
 				if(key == "name") {
 					resultset = resultset + "Name: ".bold() + value + "\n";
 					/*value = "Name: " + value;*/
@@ -174,6 +177,10 @@ function print_results(response) {
 				} else if (key == "difficulty") {
           resultset = resultset + "Difficulty: ".bold() + "\n";
           value = "Difficulty: " + value;
+          createResult(key, value, i);
+        } else if (key == "terrain") {
+          resultset = resultset + "Terrain: ".bold() + "\n";
+          value = "Terrain: " + value;
           createResult(key, value, i);
         }
 			}
@@ -250,25 +257,42 @@ function parseSuggestions() {
   return choices;
 }
 
-function postLogs() {
+function postLogs(waypoints) {
   let ips = getCurrentIP();
-  let waypoint = "PLACEHOLDER WAYPOINT";
+  let waypoint = waypoints.join();
   let query = document.getElementById('suche').value;
   let time = getCurrentTime();
   let toLog = ips + "/" + waypoint + "/" + query + "/" + time;
-  //let xhttp = new XMLHttpRequest();
-  //xhttp.open("POST", logs, false);
-  console.log(toLog);
+  let xhttp = new XMLHttpRequest();
+  xhttp.open("POST", logs, false);
+  xhttp.send();
+  console.log("POST", logs + toLog);
+  //console.log(toLog);
 }
 
 function getCurrentTime() {
-  return Date.now();
+  return Date.now()/1000;
 }
 
 function getCurrentIP() {
-  let temp;
-  //temp = JSON.stringify(getIPs(function(ip){return ip;}));
-  temp = getIPs(function(ip) {console.log(ip);})
-  console.log(temp);
-  return temp;
+  return myip;
+}
+
+function getCurrentWaypoints(response) {
+  let res = response;
+  var waypoints = [];
+  for(var i in res) {
+    var key = i;
+    var val = res[i];
+    for(var j in val) {
+      var sub_key = j;
+      var sub_val = val[j];
+      if(sub_key == "waypoint") {
+        //console.log(String(sub_val));
+        waypoints.push(sub_val);
+      }
+    }
+  }
+  console.log(waypoints);
+  return waypoints;
 }
