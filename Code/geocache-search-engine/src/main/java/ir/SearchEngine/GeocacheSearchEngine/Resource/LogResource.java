@@ -15,7 +15,11 @@ public class LogResource {
 	public Response getLog(@PathParam("ip") String ip, @PathParam("waypoint") String waypoint, @PathParam("query") String query, @PathParam("time") int time) {
 		//TODO store this to a DB
 		
-		new JDBCHandler().postLog(ip, waypoint, query, time);
+		JDBCHandler handler = new JDBCHandler();
+		String[] waypoints = waypoint.split(",");
+		for(String wp : waypoints) {
+			handler.postLog(ip, wp, query, time);
+		}
 		
 		
 		return Response.status(200).build();

@@ -72,10 +72,6 @@ public class Searcher {
 	public TopDocs searchExtended(String searchQuery, Map<String, String> values) throws org.apache.lucene.queryparser.classic.ParseException, IOException {
 		List<Query> queries = new ArrayList<Query>();
 		CharArraySet stopwords = GermanAnalyzer.getDefaultStopSet();
-		stopwords.add("Geocache");
-		stopwords.add("cache");
-		stopwords.add("geocach");
-		stopwords.add("geocache");
 		Analyzer analyzer = new GermanAnalyzer(stopwords);
 		query = queryParser.parse(searchQuery);
 		queries.add(query);

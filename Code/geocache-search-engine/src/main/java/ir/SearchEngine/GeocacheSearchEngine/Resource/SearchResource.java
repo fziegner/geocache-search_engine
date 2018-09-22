@@ -113,8 +113,7 @@ public class SearchResource {
 								 @DefaultValue("1000") @QueryParam("range") int range,
 								 @QueryParam("caseType") String caseType,
 								 @QueryParam("condition") String condition,
-								 @DefaultValue("-1") @QueryParam("minDifficulty") int minDifficulty,
-								 @DefaultValue("-1") @QueryParam("maxDifficulty") int maxDifficulty,
+								 @QueryParam("difficulty") String difficulty,
 								 @QueryParam("cacheType") String cacheType,
 								 @QueryParam("terrain") String terrain,
 								 @QueryParam("status") String status) {
@@ -142,6 +141,9 @@ public class SearchResource {
 		}
 		if(status != null) {
 			values.put("status",  status);
+		}
+		if(difficulty != null) {
+			values.put("difficulty", difficulty);
 		}
 		
 		
