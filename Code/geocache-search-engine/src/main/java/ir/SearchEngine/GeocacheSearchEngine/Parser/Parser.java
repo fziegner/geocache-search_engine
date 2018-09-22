@@ -94,7 +94,7 @@ public class Parser {
 				}
 				if(lines[i].contains("Beh‰lter: ") && flags[7] == false) {
 					flags[7] = true;
-					String caseType = lines[i].replace("Beh√§lter: ",  "");
+					String caseType = lines[i].replace("Beh‰lter: ",  "");
 					geocache.setCaseType(caseType);
 				}
 				if(lines[i].contains("D/T: ") && flags[8] == false) {
