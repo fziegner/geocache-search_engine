@@ -211,7 +211,7 @@ function createResult(newClass, result, resultNr) {
 function showExtendedSearchOptions() {
 	var x = document.getElementById("extendedSearch");
   if (x.style.display === "none") {
-    x.style.display = "block";
+    x.style.display = "inline-block";
   } else {
     x.style.display = "none";
   }
@@ -267,6 +267,8 @@ function postLogs(waypoints) {
   xhttp.open("POST", logs, false);
   xhttp.send();
   console.log("POST", logs + toLog);
+  //console.log(xhttp.responseText);
+  //  return response;
   //console.log(toLog);
 }
 
