@@ -45,24 +45,24 @@
 \end{titlepage}
 \tableofcontents
 
-\ihead{11.12.2017}
+\ihead{\today}
 \ohead{Gruppe Geocache-Search}
 \cfoot{\pagemark}
 
 \Chapter{Begriffserklärungen}
 \section{Geocaching}
-Unter Geocaching wird eine Art Schnitzeljagd verstanden. Das Wort leitet sich vom lateinischen $\gamma$$\widetilde{\eta}$, gē, stehend für ``Erde`` und dem englischen ``cache`` für ``geheimes Lager`` ab. Ziel ist es, mit Hilfe von GPS-Koordinaten und/oder veröffentlichen Tipps einen versteckten Behälter - den sogenannten ``Geocache`` (auch kurz ``Cache``)  - zu finden. In der Regel beinhaltet dieser Behälter ein Logbuch, in welches sich die Geocacher bei erfolgreicher Suche eintragen können. Zusätzlich, sofern es die Größe des Behälters hergibt, sind oftmals kleine Gegenständen zum Tausch vorhanden. Wichtig ist es, während der gesamten Zeit möglichst unentdeckt zu bleiben, sodass der Cache stets verborgen bleibt. Nach Beendigung der Suche wird der Cache wieder an seine ursprüngliche Position gebracht.
+Unter Geocaching wird eine Art Schnitzeljagd verstanden. Das Wort leitet sich vom griechischen $\gamma$$\widetilde{\eta}$, gē, stehend für ``Erde`` und dem englischen ``cache`` für ``geheimes Lager`` ab\footnote{https://de.wikipedia.org/wiki/Geocaching}. Ziel ist es, mit Hilfe von GPS-Koordinaten und/oder veröffentlichten Tipps einen versteckten Behälter - den sogenannten ``Geocache`` (auch kurz ``Cache``)  - zu finden. In der Regel beinhaltet dieser Behälter ein Logbuch, in welches sich die Geocacher bei erfolgreicher Suche eintragen können. Zusätzlich, sofern es die Größe des Behälters hergibt, sind oftmals kleine Gegenstände zum Tausch vorhanden. Wichtig ist es, während der gesamten Zeit möglichst unentdeckt zu bleiben, sodass der Cache stets verborgen bleibt. Nach Beendigung der Suche wird der Cache wieder an seine ursprüngliche Position gebracht.
 
-Es gibt eine ganze Reihe Arten von Geocaches. Vom einfachen traditionelle Caches, über Multi-Caches und Rätsel-Caches bis hin zu virtuellen Caches können Suchen veranstaltet werden.
+Es gibt eine ganze Reihe Arten von Geocaches. Von einfachen traditionellen Caches, über Multi-Caches und Rätsel-Caches bis hin zu virtuellen Caches können Suchen veranstaltet werden.
 
-Fairness wird beim Geocaching groß geschrieben. Personen, die den Cache veröndern, mutmaßlich zerstören, entfernen oder Dinge daraus stehlen wird größter Missmut entgegengestellt.
+Fairness wird beim Geocaching groß geschrieben. Personen, die den Cache verändern, mutmaßlich zerstören, entfernen oder Dinge daraus stehlen wird größter Missmut entgegengestellt.
 
 \Chapter{Motivation}
 \section{Domäne}
 \subsection{Geocaching als Sport}
 Geocaching erfreut sich zunehmender Beliebtheit unter der Bevölkerung, obwohl es in gewissem Sinne das Ziel ist, geheim zu agieren. Dieser Sport kann von Menschen aller Altersgruppen und körperlicher Verfassung betrieben werden, da in praktisch jeder Region (Wald, Stadt, Parkanlagen, Gebirge, \dots) Caches versteckt und gefunden werden können. Unterbewusst wird dadurch die Gesundheit gefördert. Aus dieser Hinsicht ist der Sport in jedem Fall zu unterstützen. 
 
-\subsection{technischer Stand}
+\subsection{Technischer Stand}
 Mittlerweile wird Geocaching durch das Internet stark unterstützt und vereinfacht. Während in den Anfängen (1980er Jahre) die Hinweise und Koordinaten meist verbal oder handschriftlich verbreitet wurden, gibt es heutzutage diverse Plattformen und Foren, um sich auszutauschen. Zu den bekanntesten gehören hier \href{geocaching.com}{geocaching.com} und \href{opencaching.de}{opencaching.de} im deutschsprachigen Raum. Diese Seiten agieren im Wesentlichen als Foren zum Austausch mit anderen Cachern. Sie bieten zwar die Möglichkeit der Suche, jedoch wird hierbei auf eine Datenbank zurückgegriffen, aus welcher mittels SQL-Anweisungen Suchanfragen bearbeitet werden. Wir haben keinen Anbieter feststellen können, der bei der Suche Methoden des Information Retrieval, d.h. Verwendung eines Index und Retrieval-Modells, anwendet. An dieser Stelle wird im Rahmen dieses Projekts prototypisch gearbeitet. 
 
 \section{Dokumentkorpus}
@@ -103,12 +103,12 @@ Jedes Dokument wird zeilenweise in den Parser eingelesen. Anhand der bereits vor
 	\label{img:objekt}
 \end{figure}
 
-Zuletzt wird dieses Objekt mit Hilfe der org.json Library \footnote{https://github.com/stleary/JSON-java} in ein JSON Objekt überführt und schließlich in eine .json-Datei geschrieben. Der Name der Datei setzt sich aus dem Waypoint-Attribut des Geocaches zusammen, welches eine eindeutige Zuordnung ermöglicht. Dieses Attribut wird bereits durch die Rohdaten von opencaching.de geliefert. \emph{TODO BILD VOM JSON}
+Zuletzt wird dieses Objekt mit Hilfe der org.json Library \footnote{https://github.com/stleary/JSON-java} in ein JSON Objekt überführt und schließlich in eine .json-Datei geschrieben. Der Name der Datei setzt sich aus dem Waypoint-Attribut des Geocaches zusammen, welches eine eindeutige Zuordnung ermöglicht. Dieses Attribut wird bereits durch die Rohdaten von opencaching.de geliefert.
 Die .txt - Rohdaten werden ab diesem Zeitpunkt nicht mehr benötigt.
 
 \section{Architektur der Suchmaschine}
 
-\subsection{Index}
+\subsection{Index} \label{index}
 Der Index wird anhand der zuvor erstellten json - Dateien konfiguriert. Jeder Geocache stellt hierbei ein eigenes Document im Index dar. Analog erhält jedes Attribut des Geocache-Java-Objekts ein eigenes Field. Lediglich auf die Attribute Tipps und Link wird verzichtet, da diese für den Index irrelevante Information enthalten (Tipps sind in Caesar-Chiffre verschlüsselt, Link ist ein HTML-Link auf opencaching.de). Es ist äußert unwahrscheinlich, dass derartige Suchqueries auftreten. Die übrigen Attribute werden mittels 3-Grammen indexiert. Dies ist besonders effizient für einen ``Search-as-you-type``-Ansatz, da Edge-N-Gramme genau den Fluss der Eingabe widerspiegeln. Aus Zeitgründen wurde diese Methode leider nicht mehr umgesetzt.
 
 \subsection{Suche}
@@ -128,7 +128,7 @@ Die Suchmaschine besitzt eine Autocompletion in etwas abgewandelter Form als geb
 
 \Chapter{Evaluation} \label{evaluation}
 
-Zur Evaluation wurden insgesamt 14 Topics erstellt, die exemplarisch die Mehrheit der möglichen Suchanfragen abdecken sollen. Es handelt sich dabei um Stichwortsuchen und Phrasensuchen sowohl mit als auch ohne erweiterte Suchparameter. Für jedes Topic wurden die besten 10 Suchergebnisse evaluiert. Das Relevanzmaß ist \textit{Precision@k} und daraus resultierende \textit{Average Precision}.  Tabelle \ref{table:eval} zeigt die verwendeten Suchquery mit ihren jeweils errechneten Precisions. Es ergibt sich letztendlich eine \textit{Mean Average Precision} von $0.60$.
+Zur Evaluation wurden insgesamt 14 Topics erstellt, die exemplarisch die Mehrheit der möglichen Suchanfragen abdecken sollen. Es handelt sich dabei um Stichwortsuchen sowohl mit als auch ohne erweiterte Suchparameter. Für jedes Topic wurden die besten 10 Suchergebnisse evaluiert. Das Relevanzmaß ist \textit{Precision@k} und die daraus resultierende \textit{Average Precision}.  Tabelle \ref{table:eval} zeigt die verwendeten Suchquery mit ihren jeweils errechneten Precisions. Es ergibt sich letztendlich eine \textit{Mean Average Precision} von $0.60$.
 
 \begin{table}
 \caption{Topics zur Evaluation}
@@ -141,21 +141,35 @@ ID 	&	Suchquery							&	Kategorie 				&	Average Precision\\
 1	&	\textit{Geocache im Wald}					&	Stichwortsuche			&	$1.00$\\
 2	&	\textit{sonniger Geocache}				&	Stichwortsuche			&	$0.58$\\
 3	&	\textit{Leipzig Auenwald}					&	Stichwortsuche			&	$0.64$\\
-4	&	\textit{Fahrrad erreichbar}				&	Phrasensuche			&	$0.62$\\
-5	&	\textit{leicht zu finden}					&	Phrasensuche			&	$0.13$\\
+4	&	\textit{Fahrrad erreichbar}				&	Stichwortsuche			&	$0.62$\\
+5	&	\textit{leicht zu finden}					&	Stichwortsuche			&	$0.13$\\
 6	&	\textit{Cache mit Aussicht}				&	Stichwortsuche			&	$1.00$\\
 7	&	\textit{See in Leipzig + cacheType=Multicache}	&	Stichwortsuche mit Parameter	& 	$0.5$\\
-8	&	\textit{Erzgebirge}						&	Stichwortsuche			&	$1$\\
+8	&	\textit{Erzgebirge}						&	Stichwortsuche			&	$1.00$\\
 9	&	\textit{Stadt + caseType=mikro}				&	Stichwortsuche mit Parameter	&	$0.43$\\
 10	&	\textit{Brandenburg + condition=ok + difficulty=2} 	&	Stichwortsuche mit Parameter	&	$0.64$\\
-11	&	\textit{weit entfernt + cacheType=Multicache}	&	Phrasensuche mit Parameter	&	$0.23$\\
-12	&	\textit{keine Hinweise}					&	Phrasensuche			&	$0.14$\\
+11	&	\textit{weit entfernt + cacheType=Multicache}	&	Stichwortsuche mit Parameter	&	$0.23$\\
+12	&	\textit{keine Hinweise}					&	Stichwortsuche			&	$0.14$\\
 13	&	\textit{Hund mitnehmen}					&	Stichwortsuche			&	$0.57$\\
-14	&	\textit{virtueller Cache nahe Berlin}			&	Phrasensuche			&	$0.93$\\
+14	&	\textit{virtueller Cache nahe Berlin}			&	Stichwortsuche			&	$0.93$\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 Aus der Tabelle lassen sich eine Reihe von Schlüssen ziehen:
+\begin{itemize}
+\item Stichwortsuchen, welche durch den Analyzer auf einzelne Worte gefiltert werden (ID 1,6,8), erreichen perfekte Precision Werte. Zum Vergleich, bei einer Suche mit Topic 1, in welcher aber das Wort Geocache nicht als Stoppwort gefiltert wird, sind die Top-Ergebnisse genau diese, welche auf häufigsten das Wort ``Geocache`` enthalten. Diese haben nichts mit dem eigentlich wichtigeren Stichwort ``Wald`` zu tun. Bei derartigen Suchen wäre es interessant, die Bewertung auf ein k > 10 anzuheben, da mit diesen Querys durchaus auch eine Suche, welche auf Vollständigkeit abzielt, durchgeführt werden könnte.
+\item generell erzielen Stichworte deutlich höhere Werte als Phrasen. Dies lässt sich einerseits darauf zurückführen, dass die Felder Name und Description Boosts enthalten, jedoch die Phrasen dort nicht explizit vorkommen, sondern sich beispielsweise in den Logs befinden. Desweiteren werden auch die Phrasen durch den QueryParser als Stichworte behandelt, so kann es passieren, dass die eigentliche Phrase nur sehr `zerstückelt`` (d.h. große Abstände zwischen den Wörtern, z.B. bei ID 5,11, 12) vorkommt, womit der Kontext eventuell ein ganz anderer ist. Ein Mechanismus zur Erkennung von Phrasen sollte hierbei Abhilfe schaffen können.
+\item Querys, welche Orte bzw. andere Named Entities enthalten, haben sehr große Chancen relevante Dokumente zu finden, weil Geocaches oftmals in der Nähe solcher versteckt sind, bzw. die Wegbeschreibung sich oft an solch markanten Punkten orientiert.
+\end{itemize}
+
+\Chapter{Ausblick}
+Um die Suchmaschine noch zu verbessern, könnten weiterblickend folgende Aspekte verfolgt werden:
+\begin{itemize}
+\item ``Search-as-you-Type``-Ansatz: Suchergebnisse können direkt bei der Eingabe angezeigt werden. Da unser Index bereits auf 3-Grammen basiert, kann dieser auch dafür verwendet werden. Jedoch müsste die Performance der Suche verbessert werden.
+\item Query-Refinement: Mithilfe der gespeicherten Logs könnte die Query verändert werden, um bessere Ergebnisse zu erzielen.
+ \item Erkennung von Phrasen für bessere Precision
+\item Verwendung von Fuzzy Querys, welche auf der Levenshtein-Editierdistanz beruhen. Damit können Tippfehler behandelt werden, um trotzdem passende Ergebnisse zu finden.
+\end{itemize}
 
 \end{document}
