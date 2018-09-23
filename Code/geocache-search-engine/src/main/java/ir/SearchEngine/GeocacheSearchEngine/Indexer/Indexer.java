@@ -2,14 +2,16 @@ package ir.SearchEngine.GeocacheSearchEngine.Indexer;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Paths;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.de.GermanAnalyzer;
+import org.apache.lucene.analysis.miscellaneous.WordDelimiterGraphFilter;
 import org.apache.lucene.analysis.shingle.ShingleFilter;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
@@ -21,6 +23,7 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.FSDirectory;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Indexer {
@@ -38,7 +41,7 @@ public class Indexer {
 	public Indexer(String indexDirectoryPath) throws IOException {
 		
 		FSDirectory indexDirectory = FSDirectory.open(Paths.get(indexDirectoryPath));
-		Analyzer analyzer = new GermanAnalyzer();
+		Analyzer analyzer = new CustomGermanAnalyzer();
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
         config.setOpenMode(OpenMode.CREATE);
 		
@@ -55,27 +58,40 @@ public class Indexer {
 		
 		Document document = new Document();
 		JSONObject json = new JSONObject(readFile(file));
-		Analyzer analyzer = new GermanAnalyzer();
+		Analyzer analyzer = new CustomGermanAnalyzer();
 		
 		for(String key : json.keySet()) {
 			if(key.equals("tips") || key.equals("link") || key.equals("waypoint")) {
 				continue; //we do not want to index irrelevant info, such as tips or the link
 			}
-			String value = json.get(key).toString(); //TODO: do not transform every key to a string but handle datatypes, e.g. difficulty is int
+			String value = "";
+			if(!key.equals("logs")) {
+				value = json.get(key).toString(); //TODO: do not transform every key to a string but handle datatypes, e.g. difficulty is int
+			} else {
+				JSONArray logJSONArray = new JSONArray(json.get("logs").toString());
+				for (int i = 0; i < logJSONArray.length(); i++) {
+				      JSONObject object = logJSONArray.optJSONObject(i);
+				      value += object.get("message");
+				 }
+			}
 			TokenStream tokenStream = analyzer.tokenStream(key, value);
 			CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
+			if(!key.equals("coordinates")) {
 			tokenStream = new StopFilter(tokenStream, GermanAnalyzer.getDefaultStopSet());
+			tokenStream = new WordDelimiterGraphFilter(tokenStream, WordDelimiterGraphFilter.SPLIT_ON_CASE_CHANGE, null);
 			tokenStream = new ShingleFilter(tokenStream, 3);
+			}
 			tokenStream.reset();
-			StringBuilder stringBuilder = new StringBuilder();
 			while (tokenStream.incrementToken()) {
 			    String term = charTermAttribute.toString();
-			    stringBuilder.append(term.toString());
+			    if(term.contains("_")) {
+			    	continue;
+			    }
+			    TextField field = new TextField(key, term, Field.Store.YES);
+			    document.add(field);
 			}
-			TextField field = new TextField(key, stringBuilder.toString(), Field.Store.YES);
 			tokenStream.end();
 			tokenStream.close();
-			document.add(field);
 		}
 		for(String key : json.keySet()) {
 			if(key.equals("waypoint")) {
@@ -84,8 +100,6 @@ public class Indexer {
 				document.add(field);	
 			}
 		}
-		//document.add(new StringField("contents", json.toString(), Field.Store.YES));
-		
 		analyzer.close();
 		return document;
 	}
@@ -136,7 +150,7 @@ public class Indexer {
 	public static String readFile(File file) {
 		StringBuilder data = new StringBuilder(); //use Stringbuilder because it is mutable, e.g. appending is faster than += on Strings
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(file)); //open file
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8")); //open file
 			String line;
 			while((line = br.readLine()) != null) {
 				data.append(line).append("\n"); //read and store the whole file
@@ -149,5 +163,4 @@ public class Indexer {
 		}
 		return data.toString();
 	}
-	
 }
