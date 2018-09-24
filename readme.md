@@ -9,6 +9,9 @@ GeocacheSearchEngine needs to following requirements to run:
 The following dependencies will be downloaded via maven:
 * [Apache Lucene](https://lucene.apache.org/)
 * [Jersey JAX-RS](https://jersey.github.io/)
+* [PostgreSQL JDBC Driver](https://github.com/pgjdbc/pgjdbc )
+* [Java Servlet API](https://javaee.github.io/servlet-spec/)
+* [JSON In Java](https://github.com/douglascrockford/JSON-java )
 
 Navigate into the project folder and execute the following command:
 ```sh
@@ -20,13 +23,15 @@ $ mvn package
 ```
 
 Now navigate into the /target folder. 
-You should see a file named geocache-search-engine.war
-Deploy this file into your Tomcat-Server and start it. Per default, visit:
+You should see a file named geocache-search-engine.war.
+Deploy this file into your Tomcat-Server and start it. 
+IMPORTANT: You need to start your tomcat from the directory where the index folder is located.
+e.g.: if you want to deploy your webapp through the tomcat application manager, you need to copy your index folder to /tomcat/bin/
+
+To visit the web interface open the index.html in the /Code/webinterface folder.
+
+To view a description of our REST API, visit:
 ```sh
 http://localhost:8080/geocache-search-engine/
 ```
-in your preferred browser. If everything is working correctly, you should see the index.jsp
-which currently display a Description of the REST API.
-
-IMPORTANT: You need to start your tomcat from the directory where the index folder is located.
-e.g.: if you want to deploy your webapp through the tomcat application manager, you need to copy your index folder to /tomcat/bin/
+in your preferred browser.
