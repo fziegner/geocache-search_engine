@@ -22,13 +22,18 @@ or
 $ mvn package
 ```
 
-Now navigate into the /target folder. 
-You should see a file named geocache-search-engine.war.
-Deploy this file into your Tomcat-Server and start it. 
-IMPORTANT: You need to start your tomcat from the directory where the index folder is located.
-e.g.: if you want to deploy your webapp through the tomcat application manager, you need to copy your index folder to /tomcat/bin/
+Now navigate into the /target folder. You should see a file named geocache-search-engine.war. Deploy this file into your Tomcat-Server and start it.
+<br><br>
+IMPORTANT: You need to start your tomcat from the directory where the data folder is located.
+e.g.: If you want to deploy your webapp through the tomcat application manager, you need to copy the data folder from our root repository (there should be 19.985 JSON's in there) to /tomcat/bin/
+<br><br>
+To create an index , visit:
+```sh
+http://localhost:8080/geocache-search-engine/webapi/index/create
+```
+You can follow the indexing process in your Tomcat console.
 
-To visit the web interface open the index.html in the /Code/webinterface folder.
+To visit the web interface open the index.html in the /Code/webinterface - localhost folder.
 
 To view a description of our REST API, visit:
 ```sh
