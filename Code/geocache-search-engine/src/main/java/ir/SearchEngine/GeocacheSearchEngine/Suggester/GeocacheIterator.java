@@ -11,6 +11,7 @@ import ir.SearchEngine.GeocacheSearchEngine.Model.Geocache;
 
 public class GeocacheIterator implements InputIterator{
 	
+	@SuppressWarnings("unused")
 	private Iterator<Geocache> geocacheIterator;
     private Geocache currentGeocache;
 

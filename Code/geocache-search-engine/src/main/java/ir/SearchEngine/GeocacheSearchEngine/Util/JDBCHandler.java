@@ -17,6 +17,7 @@ public class JDBCHandler {
 	public JDBCHandler() {
 		try {
 			Class.forName("org.postgresql.Driver");
+			@SuppressWarnings("unused")
 			Connection con = DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -4,8 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
-
 import ir.SearchEngine.GeocacheSearchEngine.Model.Geocache;
 import ir.SearchEngine.GeocacheSearchEngine.Model.Log;
 
@@ -17,7 +15,6 @@ import ir.SearchEngine.GeocacheSearchEngine.Model.Log;
 public class Parser {
 	private List<String> fileNames; //holds the filepaths that are read from
 	private List<Geocache> caches;  //parsed caches land in here
-	private List<JSONObject> cachesJSON; //hold the jsons of the parsed caches
 	
 	/**
 	 * Constructor of the Parser.
@@ -31,7 +28,6 @@ public class Parser {
 	public Parser(String folderPathIn, String folderPathOut) {
 		fileNames = FileIO.listAllFiles(folderPathIn);
 		caches = new ArrayList<Geocache>();
-		cachesJSON = new ArrayList<JSONObject>();
 		for(String file : fileNames) {
 			caches.add(parse(file));
 		}

@@ -1,7 +1,5 @@
 package ir.SearchEngine.GeocacheSearchEngine.Model;
 
-import java.util.Date;
-
 import org.json.JSONObject;
 
 public class Log {
