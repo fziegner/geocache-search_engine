@@ -33,6 +33,7 @@ public class JDBCHandler {
 			pStmt.setString(3, query);
 			pStmt.setTimestamp(4, stamp);
 			pStmt.executeUpdate();
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
