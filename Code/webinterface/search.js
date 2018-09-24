@@ -141,7 +141,7 @@ function print_results(response) {
           for(var j in logs) {
             value = value + logs[j] + "\n";
           }
-          console.log(value);
+          //console.log(value);
 					createResult(key, value, i);
 				} else if (key == "difficulty") {
           resultset = resultset + "Difficulty: ".bold() + "\n";
@@ -276,7 +276,7 @@ function printCacheLogs(response, objectID) {
           resultset.push(j + ": " + ob[j]);
         }
         //console.log("\n");
-        resultset.push("\n");
+        resultset.push("||||||\n");
       }
     }
   }
