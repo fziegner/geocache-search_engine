@@ -1,10 +1,11 @@
 # Geocache Search Engine
 ### Installation
 
-GeocacheSearchEngine needs to following requirements to run:
+GeocacheSearchEngine needs the following requirements to run:
 * [Java JDK 10](http://www.oracle.com/technetwork/java/javase/downloads/jdk10-downloads-4416644.html) for compilation
 * [Maven](https://maven.apache.org/) to run the build 
 * [Apache Tomcat 9](https://tomcat.apache.org/download-90.cgi) to be deployed on
+* [PostgreSQL](https://www.postgresql.org/) if you want to enable logging
 
 The following dependencies will be downloaded via maven:
 * [Apache Lucene](https://lucene.apache.org/)
@@ -40,3 +41,7 @@ To view a description of our REST API, visit:
 http://localhost:8080/geocache-search-engine/
 ```
 in your preferred browser.
+
+### Logging
+
+If you want to enable logging download PostgreSQL at the link above. After finishing the installation open pgAdmin4 and set the password to 'geocache' (without qoutes). Open the Query Tool by right clicking the default database named 'postgres' and copy the contents of the create.sql from the root repository into it. Execute the query by hitting F5. Now the server should start logging each search query. To view the logs execute 'SELECT * FROM logs' in the query tool.
