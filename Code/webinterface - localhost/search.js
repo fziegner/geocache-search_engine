@@ -231,13 +231,13 @@ function postLogs(waypoints) {
   let time = getCurrentTime();
   let toLog = ips + "/" + waypoint + "/" + query + "/" + time;
   let xhttp = new XMLHttpRequest();
-  xhttp.open("POST", logs, false);
+  xhttp.open("GET", logs + toLog, false);
   xhttp.send();
-  console.log("POST", logs + toLog);
+  console.log("GET", logs + toLog);
 }
 
 function getCurrentTime() {
-  return Date.now()/1000;
+  return Date.now();
 }
 
 function getCurrentIP() {
