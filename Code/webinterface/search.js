@@ -227,6 +227,9 @@ function parseSuggestions() {
 function postLogs(waypoints) {
   let ips = getCurrentIP();
   let waypoint = waypoints.join();
+  if (waypoint == ""){
+    waypoint = "No results";
+  }
   let query = document.getElementById('suche').value;
   let time = getCurrentTime();
   let toLog = ips + "/" + waypoint + "/" + query + "/" + time;
