@@ -26,6 +26,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
+import ir.SearchEngine.GeocacheSearchEngine.Indexer.CustomGermanAnalyzer;
 import ir.SearchEngine.GeocacheSearchEngine.Util.CONSTANTS;
 
 public class Searcher {
@@ -71,8 +72,7 @@ public class Searcher {
 	
 	public TopDocs searchExtended(String searchQuery, Map<String, String> values) throws org.apache.lucene.queryparser.classic.ParseException, IOException {
 		List<Query> queries = new ArrayList<Query>();
-		CharArraySet stopwords = GermanAnalyzer.getDefaultStopSet();
-		Analyzer analyzer = new GermanAnalyzer(stopwords);
+		Analyzer analyzer = new CustomGermanAnalyzer();
 		query = queryParser.parse(searchQuery);
 		queries.add(query);
 		String[] fields = values.keySet().toArray(new String[0]);
