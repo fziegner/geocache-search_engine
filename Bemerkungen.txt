@@ -1,0 +1,24 @@
+Der Server läuft lokal entweder auf http://localhost:8080/manager/html oder auf unserem Server(IP:5.83.162.120:8080).
+
+Für das Frontend wurden zusätzlich verwendet:
+-zum Abrufen der IP: https://l2.io/
+-JS Autocomplete: https://goodies.pixabay.com/javascript/auto-complete/demo.html
+
+Anmerkungen zum Frontend:
+-Anzeigen und eingeben der Suggestions funktionieren noch nicht ganz.
+ Da sie die Benutzerfreundlichkeit des Frontends beeinträchtigen, wurden sie vorerst deaktiviert.
+ Serverseitig funktionieren die Suggestions, diese werden bloß noch nicht korrekt im Frontend angezeigt.
+ Um Anfragen für die Suggestions zu stellen, sollte zum Testen die folgenden URLs benutzt werden:
+ http://5.83.162.120:8080/geocache-search-engine/webapi/search/suggest/wald
+ http://localhost:8080/geocache-search-engine/webapi/search/suggest/wald
+-Die Formatierung für die Userlogs ist noch Work-in-Progress.
+
+Mögliche REST-Anfragen:
+  -http://5.83.162.120:8080/geocache-search-engine/webapi/search/{query}
+  -http://5.83.162.120:8080/geocache-search-engine/webapi/search/extended/{query}
+  -http://5.83.162.120:8080/geocache-search-engine/webapi/suggest/{query}
+  -http://5.83.162.120:8080/geocache-search-engine/webapi/index/create [!!!Vorsicht]
+  -http://5.83.162.120:8080/geocache-search-engine/webapi/logs/{query}
+  (analog auf localhost:8080)
+
+Bei Problemen mit dem Server, bitte Meldung an uns!  
