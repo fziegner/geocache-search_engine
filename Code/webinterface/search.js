@@ -24,8 +24,8 @@ function executeExtendedSearchRESTCall() {
   let search = document.getElementById("suche").value;
 	let hiddenAfter = document.getElementById("hiddenAfter").value;
 	let coordinates =document.getElementById("coordinates").value;
-	let caseType = document.getElementById("caseType").value;
-	let condition = document.getElementById("condition").value;
+  	let caseType = document.getElementById("caseType").value;
+  	let condition = document.getElementById("condition").value;
 	let cacheType = document.getElementById("cacheType").value;
 	let terrain = document.getElementById("terrain").value;
 	let status = document.getElementById("status").value;
@@ -269,6 +269,7 @@ function printCacheLogs(response, objectID) {
       //console.log(obj[key])
       var re = obj[key];
       for(var i in re) {
+        resultset.push("|||||\n" + i + ".Log: ");
         //console.log(re[i]);
         var ob = re[i];
         for(var j in ob) {
@@ -276,7 +277,7 @@ function printCacheLogs(response, objectID) {
           resultset.push(j + ": " + ob[j]);
         }
         //console.log("\n");
-        resultset.push("||||||\n");
+        resultset.push("|\n");
       }
     }
   }
