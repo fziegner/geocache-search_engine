@@ -3,6 +3,7 @@ const searchURL = baseURL + "search/";
 const extendedSearch = searchURL + "extended/";
 const suggestions = baseURL + "suggest/";
 const logs = baseURL + "logs/";
+const index = baseURL + "index/create"
 
 function executeRESTCall(){
   let query = document.getElementById("suche").value;
@@ -281,4 +282,13 @@ function printCacheLogs(response, objectID) {
   }
   //console.log(resultset);
   return resultset;
+}
+
+function createIndexCall() {
+  let xhttp = new XMLHttpRequest();
+  xhttp.open("GET", index, false);
+  xhttp.send();
+  let response = JSON.parse(xhttp.responseText);
+  console.log(response);
+	return response;
 }
