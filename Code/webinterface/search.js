@@ -136,10 +136,10 @@ function print_results(response) {
 				}else if (key == "logs") {
 					resultset = resultset + "Logs: ".bold() + value + "\n";
           var logs = printCacheLogs(response, i);
-          value = "Logs: \n  ";
-          /*for(var j in logs) {
-            value = value + logs[j];
-          }*/
+          value = "Logs: \n  "  ;
+          for(var j in logs) {
+            value = value + logs[j] + "\n";
+          }
           console.log(value);
 					createResult(key, value, i);
 				} else if (key == "difficulty") {
