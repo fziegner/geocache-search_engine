@@ -1,7 +1,0 @@
--Suggestions anzeigen lassen
-
--.../webapi/logs/{log}
-
-POST Request
--{log} - {ip}/{waypoint}/{query}/*{time}
--Zeit in sekunden

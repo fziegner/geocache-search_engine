@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<link href="style.css" rel="stylesheet" type="text/css">
+		<title>Geo-Caching</title>
+		<script src="search.js"></script>
+
+		<link href="auto-complete.css" rel="stylesheet" type="text/css">
+		<script src="auto-complete.min.js"></script>
+		<script type="text/javascript" src="https://www.l2.io/ip.js?var=myip"></script>
+	</head>
+    <body>
+		<header>
+			<a href="index.html">
+				<img src="logo.png" alt="Logo" width="60pt">
+				Geo-Caching
+			</a>
+		</header>
+		<main>
+			<div>
+				<button class="button" onClick="showExtendedSearchOptions()">v</button>
+				<input typ="text" id="suche" name="suche" list="suggestionsServ"  onkeypress="handle(event)"/>
+					<datalist id="suggestionsServ"></datalist>
+				<button class="button" onclick="print_results(executeRESTCall())">Search/Print Results</button><br>
+				<div id="extendedSearch">
+					<label for="hiddenAfter">hiddenAt</label>
+					<input typ="text" id="hiddenAfter" name="hiddenAfter" style="width:194px"><br>
+					<label for="coordinates">coordinates</label>
+					<input typ="text" id="coordinates" name="coordinates" style="width:194px"><br>
+					<label for="caseType">caseType</label>
+					<select id="caseType" name="caseType" style="width:200px">
+					  <option value=""></option>
+					  <option value="nano">nano</option>
+					  <option value="mikro">mikro</option>
+					  <option value="klein">klein</option>
+					  <option value="normal">normal</option>
+					  <option value="groß">groß</option>
+					  <option value="extrem groß">extrem groß</option>
+					</select><br>
+					<label for="condition">condition</label>
+					<select id="condition" name="condition" style="width:200px">
+						<option value=""></option>
+						<option value="ok">ok</option>
+						<option value="Cachebeschrebung ist veraltet">Cachebeschrebung ist veraltet</option>
+						<option value="Cache benötigt Wartung, Cachebeschreibung ist veraltet">Cache benötigt Wartung, Cachebeschreibung veraltet</option>
+						<option value="Cache benötig Wartung">Cache benötigt Wartung</option>
+					</select><br>
+					<label for="cacheType">cacheType</label>
+					<select id="cacheType" name="cacheType" style="width:200px">
+						<option value=""></option>
+						<option value="normaler Cache">normaler Cache</option>
+						<option value="Multicache">Multicache</option>
+						<option value="Rätselcache">Rätselcache</option>
+						<option value="virtueller Cache">virtueller Cache</option>
+						<option value="Event-Cache">Event-Cache</option>
+						<option value="beweglicher Cache">beweglicher Cache</option>
+						<option value="Drive-In-Cache">Drive-In-Cache</option>
+						<option value="Mathe-/Physikcache">Mathe-/Physikcache</option>
+						<option value="Webcam-Cache">Webcam-Cache</option>
+						<option value="unbekannter Cachetyp">unbekannter Cachetyp</option>
+					</select><br>
+					<label for="terrain">terrain</label>
+					<select id ="terrain" name="terrain" style="width:200px">
+					  <option value=""></option>
+					  <option value="1">1.0</option>
+					  <option value="1.5">1.5</option>
+					  <option value="2">2.0</option>
+					  <option value="2.5">2.5</option>
+					  <option value="3">3.0</option>
+					  <option value="3.5">3.5</option>
+					  <option value="4">4.0</option>
+					  <option value="4.5">4.5</option>
+					  <option value="5">5.0</option>
+					</select><br>
+					<label for="status">status</label>
+					<select id="status" name="status" style="width:200px">
+						<option value=""></option>
+						<option value="kann gesucht werden">kann gesucht werden</option>
+						<option value"momentan nicht verfügbar">momentan nicht verfügbar</option>
+					</select><br>
+					<label for="difficulty">difficulty</label>
+					<select id ="difficulty" name="difficulty" style="width:200px">
+					  <option value=""></option>
+					  <option value="1">1.0</option>
+					  <option value="1.5">1.5</option>
+					  <option value="2">2.0</option>
+					  <option value="2.5">2.5</option>
+					  <option value="3">3.0</option>
+					  <option value="3.5">3.5</option>
+					  <option value="4">4.0</option>
+					  <option value="4.5">4.5</option>
+					  <option value="5">5.0</option>
+					</select><br>
+					<button class="button" onClick="print_results(executeExtendedSearchRESTCall())">Extended Search</button>
+				</div>
+			</div>
+			<div id="content"></div>
+		</main>
+		<footer>
+			<div>
+				<button class="button" onClick="location.href='http://localhost:8080/geocache-search-engine/panel.jsp'">Admin Panel</button>
+				<!--<button class="button" onClick="createIndexCall()">Create Index</button>-->
+				Information Retrieval 2018
+				<!--<button class="button" type="submit" onclick="executeRESTCall()">search</button>
+				<button class="button" onclick="pprint_json_to_console(executeRESTCall())">pprint console</button>
+				<button class="button" onclick="pprint_json_to_website(executeRESTCall())">pprint website</button>-->
+			</div>
+		</footer>
+
+		<script>
+		var demo1 = new autoComplete({
+		            selector: '#suche',
+		            minChars: 1,
+		            source: function(term, suggest){
+		                term = term.toLowerCase();
+		                var choices = [];
+										var temp = [];//parseSuggestions();
+										for(var i = 0; i < temp.length; i++) {
+											if(!choices.includes(temp[i])) {
+												choices.push(temp[i]);
+											}
+										}
+		                var suggestions = [];
+		                for (i=0;i<choices.length;i++)
+		                    if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+		                suggest(suggestions);
+		            }
+		        });
+		</script>
+	</body>
+</html>

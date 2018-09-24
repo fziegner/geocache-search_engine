@@ -1,5 +1,8 @@
 Der Server läuft lokal entweder auf http://localhost:8080/manager/html oder auf unserem Server(IP:5.83.162.120:8080).
 
+Für das Frontend gibt es zwei Ordner: der normale "webinterface"-Ordner beinhaltet das Frontend, der auf unseren Server zugreift.
+Der Ordner "webinterface - localhost" greift auf den localhost-Server zu.
+
 Für das Frontend wurden zusätzlich verwendet:
 -zum Abrufen der IP: https://l2.io/
 -JS Autocomplete: https://goodies.pixabay.com/javascript/auto-complete/demo.html
@@ -21,4 +24,4 @@ Mögliche REST-Anfragen:
   -http://5.83.162.120:8080/geocache-search-engine/webapi/logs/{query}
   (analog auf localhost:8080)
 
-Bei Problemen mit dem Server, bitte Meldung an uns!  
+Bei Problemen mit dem Server, bitte Meldung an uns!
