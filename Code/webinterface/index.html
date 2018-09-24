@@ -20,7 +20,7 @@
 		<main>
 			<div>
 				<button class="button" onClick="showExtendedSearchOptions()">v</button>
-				<input typ="text" id="suche" name="suche" list="suggestionsServ"  onkeypress="print_results(executeRESTCall())"/>
+				<input typ="text" id="suche" name="suche" list="suggestionsServ"  onkeypress="handle(event)"/>
 					<datalist id="suggestionsServ"></datalist>
 				<button class="button" onclick="print_results(executeRESTCall())">Search/Print Results</button><br>
 				<div id="extendedSearch">

@@ -292,3 +292,9 @@ function createIndexCall() {
   console.log(response);
 	return response;
 }
+
+function handle(e) {
+  if(e.keyCode === 13) {
+    print_results(executeRESTCall());
+  }
+}
