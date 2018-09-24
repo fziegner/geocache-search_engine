@@ -1,6 +1,6 @@
 <html>
 <h2><strong>Geocache Search Engine REST Description <br /></strong></h2>
-<p>run your requests on: localhost:8080/geocache-search-engine/webapi/...</p>
+<p>Run your requests on: 5.83.162.120:8080/geocache-search-engine/webapi/... <strong>OR</strong> localhost:8080/geocache-search-engine/webapi/... if you deployed your .war locally.</p>
 <ul>
 	<li>.../search/{query}
 		<ul>
@@ -25,7 +25,7 @@
 <ul>
 	<li>.../index/create
 		<ul>
-			<li>Creation method for the index.<strong>ATTENTION:</strong> Could take some time to recreate the index!</li>
+			<li>Creation method for the index. <strong>ATTENTION:</strong> Could take some time to recreate the index!</li>
 		</ul>
 	</li>
 </ul>
