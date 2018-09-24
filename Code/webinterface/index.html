@@ -23,7 +23,6 @@
 				<input typ="text" id="suche" name="suche" list="suggestionsServ"/>
 					<datalist id="suggestionsServ"></datalist>
 				<button class="button" onclick="print_results(executeRESTCall())">Search/Print Results</button><br>
-				<!--<button class="button" onclick="print_results(getSuggestions())">Suggestions Test</button><br>-->
 				<div id="extendedSearch">
 					<label for="hiddenAfter">hiddenAt</label>
 					<input typ="text" id="hiddenAfter" name="hiddenAfter" style="width:194px"><br>
@@ -40,7 +39,6 @@
 					  <option value="extrem groß">extrem groß</option>
 					</select><br>
 					<label for="condition">condition</label>
-					<!--<input typ="text" id="condition" name="condition" style="width:194px"><br>-->
 					<select id="condition" name="condition" style="width:200px">
 						<option value=""></option>
 						<option value="ok">ok</option>
@@ -96,15 +94,14 @@
 					</select><br>
 					<button class="button" onClick="print_results(executeExtendedSearchRESTCall())">Extended Search</button>
 				</div>
-
 			</div>
 			<div id="content"></div>
 		</main>
 		<footer>
 			<div>Information Retrieval 2018
-				<button class="button" type="submit" onclick="executeRESTCall()">search</button>
+				<!--<button class="button" type="submit" onclick="executeRESTCall()">search</button>
 				<button class="button" onclick="pprint_json_to_console(executeRESTCall())">pprint console</button>
-				<button class="button" onclick="pprint_json_to_website(executeRESTCall())">pprint website</button>
+				<button class="button" onclick="pprint_json_to_website(executeRESTCall())">pprint website</button>-->
 				<button class="button" onClick="location.href='http://5.83.162.120:8080/geocache-search-engine/panel.jsp'">AdminPanel</button>
 			</div>
 		</footer>
@@ -116,7 +113,7 @@
 		            source: function(term, suggest){
 		                term = term.toLowerCase();
 		                var choices = [];
-										var temp = parseSuggestions();
+										var temp = [];//parseSuggestions();
 										for(var i = 0; i < temp.length; i++) {
 											if(!choices.includes(temp[i])) {
 												choices.push(temp[i]);

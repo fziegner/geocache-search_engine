@@ -13,7 +13,7 @@ function executeRESTCall(){
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send();
   let response = JSON.parse(xhttp.responseText);
-  //console.log(response);
+  console.log(response);
   let waypoints = getCurrentWaypoints(response);
   postLogs(waypoints);
 	return response;
@@ -56,32 +56,6 @@ function executeExtendedSearchRESTCall() {
   if(!(difficulty === "")) {
     query = query + "&difficulty=" + difficulty;
   }
-  /*
-	if(hiddenAfter === "") {
-		hiddenAfter = "NULL"
-	}
-	if(coordinates === "") {
-		coordinates = "NULL"
-	}
-	if(caseType === "") {
-		caseType = "NULL"
-	}
-	if(condition === "") {
-		condition = "NULL"
-	}
-	if(cacheType === "") {
-		cacheType = "NULL"
-	}
-	if(terrain === "") {
-		terrain = "NULL"
-	}
-	if(status === "") {
-		status = "NULL"
-	}
-  */
-	//let query = "hiddenAfter=" + document.getElementById("hiddenAfter").value +  "&coordinates=" + document.getElementById("coordinates").value + "&caseType=" + document.getElementById("caseType").value +  "&condition=" + document.getElementById("condition").value +  "&cacheType=" + document.getElementById("cacheType").value +  "&terrain=" + document.getElementById("terrain").value +  "&status=" + document.getElementById("status").value;
-	//let query = search + "?hiddenAfter=" + hiddenAfter +  "&coordinates=" + coordinates + "&caseType=" + caseType +  "&condition=" + condition +  "&cacheType=" + cacheType +  "&terrain=" + terrain +  "&status=" + status;
-  //console.log(query);
 	let xhttp = new XMLHttpRequest();
 	console.log("GET", extendedSearch + query);
 	xhttp.open("GET", extendedSearch + query, false);
@@ -92,14 +66,6 @@ function executeExtendedSearchRESTCall() {
   let waypoints = getCurrentWaypoints(response);
   postLogs(waypoints);
 	return response;
-}
-
-function toggle_visibility(id) {
-  var e = document.getElementById(id);
-  if(e.style.display == 'block')
-    e.style.display = 'none';
-  else
-    e.style.display = 'block';
 }
 
 function pprint_json_to_console(response) {
@@ -125,14 +91,11 @@ function print_results(response) {
 		resultset = resultset + "ID: ".bold() + i + "\n";
 		createArea(i, "json");
 		var obj = response[i];
-		//console.log("id: " + i);
 		for(var key in obj) {
 			var value = obj[key];
-			//console.log(key);
-			if(key == "name" || key == "coordinates" || key == "status" || key == "condition" || key == "hiddenAt" || key == "waypoint" || key == "cacheType" || key == "caseType" || key == "link" || key == "description" || key == "difficulty" || key == "terrain") {
+			if(key == "name" || key == "coordinates" || key == "status" || key == "condition" || key == "hiddenAt" || key == "waypoint" || key == "cacheType" || key == "caseType" || key == "link" || key == "description" || key == "difficulty" || key == "terrain" || key == "logs") {
 				if(key == "name") {
 					resultset = resultset + "Name: ".bold() + value + "\n";
-					/*value = "Name: " + value;*/
 					createResult(key, value, i);
 				}else if (key == "coordinates") {
 					resultset = resultset + "Koordinaten: ".bold() + value + "\n";
@@ -171,8 +134,13 @@ function print_results(response) {
 					value = "Beschreibung: " + value;
 					createResult(key, value, i);
 				}else if (key == "logs") {
-					resultset = resultset + "Logs: ".bold() + "PLACEHOLDER" + "\n";
-					value = "Logs: " + value;
+					resultset = resultset + "Logs: ".bold() + value + "\n";
+          var logs = printCacheLogs(response, i);
+          value = "Logs: \n  ";
+          /*for(var j in logs) {
+            value = value + logs[j];
+          }*/
+          console.log(value);
 					createResult(key, value, i);
 				} else if (key == "difficulty") {
           resultset = resultset + "Difficulty: ".bold() + "\n";
@@ -187,7 +155,6 @@ function print_results(response) {
 		}
 		resultset = resultset + "\n";
 	}
-	/*document.getElementById("json").innerHTML = resultset;*/
 }
 
 function createArea(newId, bigId) {
@@ -251,7 +218,6 @@ function parseSuggestions() {
   jString = jString.replace("{\"suggestions\":[", " ");
   jString = jString.replace("]}", " ");
   var choices = jString.split(',');
-  //console.log(JSON.stringify(suggestionsRe));
   console.log(jString);
   console.log(choices);
   return choices;
@@ -267,9 +233,6 @@ function postLogs(waypoints) {
   xhttp.open("POST", logs, false);
   xhttp.send();
   console.log("POST", logs + toLog);
-  //console.log(xhttp.responseText);
-  //  return response;
-  //console.log(toLog);
 }
 
 function getCurrentTime() {
@@ -290,11 +253,32 @@ function getCurrentWaypoints(response) {
       var sub_key = j;
       var sub_val = val[j];
       if(sub_key == "waypoint") {
-        //console.log(String(sub_val));
         waypoints.push(sub_val);
       }
     }
   }
-  console.log(waypoints);
   return waypoints;
+}
+
+function printCacheLogs(response, objectID) {
+  var obj = response[objectID];
+  var resultset = [];
+  for(var key in obj) {
+    if(key == "logs") {
+      //console.log(obj[key])
+      var re = obj[key];
+      for(var i in re) {
+        //console.log(re[i]);
+        var ob = re[i];
+        for(var j in ob) {
+          //console.log(j + ": " + ob[j])
+          resultset.push(j + ": " + ob[j]);
+        }
+        //console.log("\n");
+        resultset.push("\n");
+      }
+    }
+  }
+  //console.log(resultset);
+  return resultset;
 }
