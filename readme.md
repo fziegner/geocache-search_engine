@@ -15,6 +15,7 @@ The following dependencies will be downloaded via maven:
 * [JSON In Java](https://github.com/douglascrockford/JSON-java )
 
 First install JDK 10 by following [this guide](https://websiteforstudents.com/install-oracle-java-jdk-10-on-ubuntu-16-04-17-10-18-04-via-ppa/).
+Previous JDK version (including openjdk) might work, but it is not guaranteed.
 Next install Maven by executing:
 ```sh
 sudo apt-get install maven
